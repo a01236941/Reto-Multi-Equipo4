@@ -37,8 +37,7 @@ imputar_sima <- function(base,auditoria="reports/auditoria") {
   stopifnot(!anyDuplicated(base,by=c("estacion","fecha_hora")))
   x <- copy(base); setorder(x,estacion,fecha_hora)
   set.seed(20260930)
-  modelos <- mascaras <- errores <- propuestas <- list()
-  conteo <- 0L
+  modelos <- mascaras <- propuestas <- list()
   for (ee in sort(unique(x$estacion))) {
     ids <- which(x$estacion==ee); local <- x[ids]
     tiempo <- seq(min(local$fecha_hora),max(local$fecha_hora),by="hour")

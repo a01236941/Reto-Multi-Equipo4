@@ -37,3 +37,27 @@ Las columnas originales mantienen las mediciones después de la limpieza. Para l
 La partición anterior corresponde a esta evaluación de imputación. Las estimaciones de 2020–2024 son preparación retrospectiva del entrenamiento, no una simulación de operaciones en esos años. El método fue seleccionado con 2025, por lo que ese año no debe presentarse después como prueba final independiente. Si el equipo cambia los cortes temporales, tiene que reajustar y seleccionar el imputador dentro de sus nuevos periodos. El horizonte de predicción de O3 sigue por definir y no debe confundirse con el límite de tres horas de imputación.
 
 Referencias metodológicas: Hyndman y Athanasopoulos, *Forecasting: Principles and Practice*, [métodos ingenuos](https://otexts.com/fpp3/simple-methods.html) y [autorregresión](https://otexts.com/fpp3/AR.html).
+
+## Resultados de esta ejecución
+
+Se completaron 152 594 celdas: 99 828 por autorregresión, 48 139 por persistencia y 4 627 mediante el rezago de 24 horas. Representan el 1.2243 % de las 12 463 620 celdas de medición y el 10.8740 % de sus 1 403 295 faltantes posteriores a la limpieza.
+
+La última columna permite contrastar el método seleccionado con persistencia en el mismo conjunto de prueba. No se cambió el método después de ver 2026. Por ejemplo, la autorregresión de PM10 obtuvo menor MAE en validación, pero en prueba tuvo mayor MAE que persistencia (aunque menor RMSE). No todos los resultados mejoran al mismo tiempo.
+
+Los errores están en las unidades originales de cada variable, todavía pendientes de cotejo con el diccionario. No representan porcentajes.
+
+| Variable | Método elegido en 2025 | MAE 2025 | MAE 2026 | RMSE 2026 | MAE persistencia 2026 |
+|---|---|---:|---:|---:|---:|
+| CO | autorregresion | 0.1120 | 0.1017 | 0.1945 | 0.1027 |
+| NO | persistencia | 5.3834 | 4.3776 | 11.6251 | 4.3776 |
+| NO2 | autorregresion | 3.4029 | 2.9379 | 4.4063 | 3.1482 |
+| NOX | autorregresion | 7.9989 | 7.3180 | 14.3193 | 7.7808 |
+| PM10 | autorregresion | 11.8257 | 9.7754 | 14.5315 | 9.2767 |
+| PM2.5 | autorregresion | 5.0591 | 3.9759 | 6.6458 | 3.9897 |
+| PRS | autorregresion | 0.5399 | 0.4978 | 0.7721 | 0.5154 |
+| RAINF | autorregresion | 0.0486 | 0.0446 | 0.6665 | 0.0370 |
+| RH | autorregresion | 3.3862 | 3.4414 | 5.0712 | 5.4973 |
+| SO2 | persistencia | 1.2255 | 0.7797 | 2.3770 | 0.7797 |
+| SR | rezago_24h | 0.0402 | 0.0473 | 0.1200 | 0.0725 |
+| TOUT | autorregresion | 0.8311 | 0.7706 | 1.1675 | 1.4217 |
+| WSR | autorregresion | 1.7865 | 1.8477 | 2.6007 | 2.1999 |
