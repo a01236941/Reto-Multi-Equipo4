@@ -1,13 +1,13 @@
 """Base final para modelar O3.
-Entrada: data/imputada/sima_imputada_AAAA.csv (salida de imputar_saits.py)
-Salida:  data/final/sima_modelo_o3_AAAA.csv y reports/imputacion_saits/base_final_resumen.csv
+Entrada: data/imputada/sima_imputada_AAAA_sN.csv.gz (salida de imputar_saits.py)
+Salida:  data/final/sima_modelo_o3_AAAA_sN.csv.gz y reports/imputacion_saits/base_final_resumen.csv
 Ejecutar desde la raíz del proyecto:  python python/base_final.py
 """
 import glob, os
 import numpy as np
 import pandas as pd
 
-d = pd.concat([pd.read_csv(a) for a in sorted(glob.glob("data/imputada/sima_imputada_*.csv"))])
+d = pd.concat([pd.read_csv(a) for a in sorted(glob.glob("data/imputada/sima_imputada_*.csv.gz"))])
 d["fecha_hora"] = pd.to_datetime(d["fecha_hora"])
 n_total = len(d)
 
@@ -53,7 +53,7 @@ final["fecha_hora"] = final.fecha_hora.dt.strftime("%Y-%m-%d %H:%M:%S")
 # un archivo por semestre para quedar muy por debajo del límite de subida de GitHub
 sem = final["anio"].astype(str) + "_s" + np.where(final["mes"] <= 6, "1", "2")
 for a, g in final.groupby(sem):
-    ruta = f"data/final/sima_modelo_o3_{a}.csv"
+    ruta = f"data/final/sima_modelo_o3_{a}.csv.gz"
     g.to_csv(ruta, index=False)
     print(ruta, len(g), "filas", round(os.path.getsize(ruta)/2**20, 1), "MB")
 print("Columnas:", final.shape[1])

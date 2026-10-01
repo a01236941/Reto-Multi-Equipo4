@@ -2,7 +2,7 @@
 Transformer-Diffusion de Gómez Santos et al., 2027).
 
 Entrada:  data/processed/sima_horario_AAAA.csv.gz  (base limpia del pipeline en R)
-Salida:   data/imputada/sima_imputada_AAAA.csv
+Salida:   data/imputada/sima_imputada_AAAA_sN.csv.gz
           reports/imputacion_saits/*.csv y resumen.json
 
 Ejecutar desde la raíz del proyecto:  python python/imputar_saits.py
@@ -270,7 +270,7 @@ final = final.sort_values(["estacion", "fecha_hora"])
 # un archivo por semestre para quedar muy por debajo del límite de subida de GitHub
 sem = final["fecha_hora"].str[:4] + "_s" + np.where(final["fecha_hora"].str[5:7].astype(int) <= 6, "1", "2")
 for a, g in final.groupby(sem):
-    ruta = f"data/imputada/sima_imputada_{a}.csv"
+    ruta = f"data/imputada/sima_imputada_{a}.csv.gz"
     g.to_csv(ruta, index=False)
     print(ruta, len(g), "filas", round(os.path.getsize(ruta)/2**20, 1), "MB")
 
