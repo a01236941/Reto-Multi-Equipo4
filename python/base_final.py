@@ -50,7 +50,9 @@ print(res)
 
 os.makedirs("data/final", exist_ok=True)
 final["fecha_hora"] = final.fecha_hora.dt.strftime("%Y-%m-%d %H:%M:%S")
-for a, g in final.groupby("anio"):
+# un archivo por semestre para quedar muy por debajo del límite de subida de GitHub
+sem = final["anio"].astype(str) + "_s" + np.where(final["mes"] <= 6, "1", "2")
+for a, g in final.groupby(sem):
     ruta = f"data/final/sima_modelo_o3_{a}.csv"
     g.to_csv(ruta, index=False)
     print(ruta, len(g), "filas", round(os.path.getsize(ruta)/2**20, 1), "MB")

@@ -61,7 +61,7 @@ Creamos estos atributos derivados: año, mes, hora y temporada; seno y coseno de
 
 ## 4. Reformateo y reestructuración
 
-Las hojas por estación se unieron en una sola tabla ordenada por estación y hora, con una columna `fecha_hora` común. La base se guarda dividida por año, en CSV, para respetar el límite de tamaño de GitHub:
+Las hojas por estación se unieron en una sola tabla ordenada por estación y hora, con una columna `fecha_hora` común. La base se guarda en CSV, dividida por semestre, para respetar el límite de tamaño de GitHub:
 
 - Base limpia: https://github.com/a01236941/Reto-Multi-Equipo4/tree/trunk/data/processed
 - Base imputada con SAITS (con marcas de imputación): https://github.com/a01236941/Reto-Multi-Equipo4/tree/trunk/data/imputada

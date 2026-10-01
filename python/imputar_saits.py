@@ -267,7 +267,9 @@ for v in VARS + ["WDR"]:
     final[v] = final[v].round(4)
 final["fecha_hora"] = final["fecha_hora"].dt.strftime("%Y-%m-%d %H:%M:%S")
 final = final.sort_values(["estacion", "fecha_hora"])
-for a, g in final.groupby(final["fecha_hora"].str[:4]):
+# un archivo por semestre para quedar muy por debajo del límite de subida de GitHub
+sem = final["fecha_hora"].str[:4] + "_s" + np.where(final["fecha_hora"].str[5:7].astype(int) <= 6, "1", "2")
+for a, g in final.groupby(sem):
     ruta = f"data/imputada/sima_imputada_{a}.csv"
     g.to_csv(ruta, index=False)
     print(ruta, len(g), "filas", round(os.path.getsize(ruta)/2**20, 1), "MB")
