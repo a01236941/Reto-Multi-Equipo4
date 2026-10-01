@@ -2,7 +2,7 @@
 
 ## Alcance y procedencia
 
-Se analizaron únicamente los siete Excel recibidos en `drive-download-20260930T212200Z-1-001.zip`. Se adaptó la idea del cuaderno `BD.ipynb`: recorrer archivos y hojas, unificar la fecha y añadir estación y año. La descarga con `googledrive` se sustituyó por lectura local. El cuaderno original no se ejecutó.
+Se analizaron únicamente los siete Excel entregados por SIMA (2020 a julio de 2026). Se adaptó la idea del cuaderno `BD.ipynb`: recorrer archivos y hojas, unificar la fecha y añadir estación y año. La descarga con `googledrive` se sustituyó por lectura local. El cuaderno original no se ejecutó.
 
 Cada fila conserva `archivo`, `estacion` y `fila_excel`. `anio_archivo` se extrae del nombre del libro; `anio` se deriva de la fecha y se verifica que coincidan. `fecha_original` conserva el serial de Excel como texto. Los hashes SHA-256 permiten comprobar que los libros permanecen intactos.
 
@@ -36,7 +36,7 @@ Se normalizan vacíos y códigos textuales `NA`, `N/A`, `NULL` y `NaN`, y se reg
 
 Los porcentajes por variable usan como denominador las filas existentes. Los porcentajes globales usan 830 908 × 15 = 12 463 620 celdas de medición. La ausencia de una fila horaria se contabiliza en `horas_sin_fila_interiores.csv`, no dentro de esos porcentajes. Las hojas ausentes aparecen en `cobertura_estacion_anio.csv`.
 
-Las columnas originales conservan los NA después de la limpieza. En 13 predictoras se añaden columnas `*_preparado` y `*_metodo` con estimaciones de hasta tres horas desde la última observación real. Se comparan persistencia, rezago de 24 horas y autorregresión; los resultados y porcentajes están en `imputacion.csv`. No se imputa por media ni mediana. O3 y WDR conservan sus faltantes. El detalle de ajuste, selección, prueba independiente y limitaciones está en `metodo_imputacion.md`. Se evita rellenar series enteras, asumir cero para lluvia ausente o utilizar lecturas futuras como entradas del imputador.
+Las columnas originales conservan los NA después de la limpieza. En 13 predictoras se añaden columnas `*_preparado` y `*_metodo` con estimaciones de hasta tres horas desde la última observación real. Se comparan persistencia, rezago de 24 horas y autorregresión; los resultados y porcentajes están en `imputacion.csv`. No se imputa por media ni mediana. O3 y WDR conservan sus faltantes. Esta fue la primera versión de la imputación. La versión final usa SAITS (`python/imputar_saits.py`) y sus resultados están en `reports/imputacion_saits/`. Se evita rellenar series enteras, asumir cero para lluvia ausente o utilizar lecturas futuras como entradas del imputador.
 
 `faltantes_por_variable.csv`, `faltantes_por_estacion.csv` y `faltantes_estacion_anio.csv` describen las mediciones tras las correcciones y **antes** de usar las columnas imputadas. `imputacion.csv` permite obtener los faltantes restantes restando `imputados` de `faltantes`. En `resumen.json`, `faltantes_finales` conserva el conteo de NA de las mediciones; `faltantes_base_uso` corresponde a la vista con predictoras preparadas. No se suman las columnas duplicadas al denominador de 15 mediciones.
 
