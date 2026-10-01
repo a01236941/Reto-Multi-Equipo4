@@ -24,7 +24,7 @@ d["WDR_cos"] = np.where(calma, 0.0, np.cos(np.deg2rad(d.WDR)))
 predictoras = ["TOUT", "RH", "SR", "RAINF", "PRS", "WSR", "NO", "NO2", "NOX", "CO",
                "WDR_sin", "WDR_cos", "hora_sin", "hora_cos", "mes_sin", "mes_cos"]
 
-# La respuesta debe ser O3 medido, nunca imputado
+# La respuesta es O3 medido, nunca imputado.
 sin_o3 = d.O3.isna() | (d.O3_imp == 1)
 n_sin_o3 = int(sin_o3.sum()); d = d[~sin_o3]
 incompleta = d[predictoras].isna().any(axis=1)
@@ -50,7 +50,7 @@ print(res)
 
 os.makedirs("data/final", exist_ok=True)
 final["fecha_hora"] = final.fecha_hora.dt.strftime("%Y-%m-%d %H:%M:%S")
-# un archivo por semestre para quedar muy por debajo del límite de subida de GitHub
+# Un archivo por semestre.
 sem = final["anio"].astype(str) + "_s" + np.where(final["mes"] <= 6, "1", "2")
 for a, g in final.groupby(sem):
     ruta = f"data/final/sima_modelo_o3_{a}.csv.gz"

@@ -89,7 +89,7 @@ for est in base["estacion"].unique():
     if ref.sum() < 1000:
         ref = sel
     mu = Z.loc[ref, MEDIDAS].mean()
-    # piso de la desviación: evita escalas enormes en estaciones casi constantes (p. ej. lluvia)
+    # Piso de la desviación para estaciones casi constantes (p. ej. lluvia).
     sd = np.maximum(Z.loc[ref, MEDIDAS].std().fillna(1), 0.25 * sd_global)
     mu = mu.fillna(0)
     Z.loc[sel, MEDIDAS] = (Z.loc[sel, MEDIDAS] - mu) / sd
@@ -174,10 +174,7 @@ P_mediana = X_te_h.copy()
 for f in range(NM):
     P_mediana[:, :, f] = np.where(np.isnan(X_te_h[:, :, f]), med_tr[f], X_te_h[:, :, f])
 
-# Pasar a unidades originales usando una estación de referencia por ventana no es posible
-# (la ventana no guarda la estación), así que las métricas se calculan en escala z
-# y además en unidades originales con la desviación media de las estaciones.
-sd_medio = pd.concat([estad[e][1] for e in estad], axis=1).mean(axis=1).values
+# Métricas en escala estandarizada para poder comparar variables con unidades distintas.
 filas = []; filas_b = []
 for nombre, P in [("SAITS", P_saits), ("Interpolación lineal", P_lin),
                   ("Último valor observado", P_locf), ("Media", P_media), ("Mediana", P_mediana)]:
@@ -211,7 +208,7 @@ for est in base["estacion"].unique():
     arr = Z.values[sel].astype("float32")
     n = len(arr); pad = (-n) % L
     arr_p = np.vstack([arr, np.full((pad, arr.shape[1]), np.nan, "float32")])
-    # dos pasadas desfasadas 24 h y promedio, para suavizar los bordes de ventana
+    # Dos pasadas desfasadas 24 h y promedio para suavizar los bordes de ventana.
     acum = np.zeros((len(arr_p), NM)); cuenta = np.zeros((len(arr_p), NM))
     for desf in (0, L // 2):
         a = arr_p[desf:]; k = len(a) // L
@@ -231,7 +228,7 @@ for est in base["estacion"].unique():
     for v in VARS + ["WDR"]:
         col = "WDR_sin" if v == "WDR" else v
         falt = base.loc[sel, col].isna().values
-        # largo de cada racha de faltantes
+        # Largo de cada racha de faltantes.
         grupo = np.cumsum(~falt); racha = pd.Series(falt).groupby(grupo).transform("sum").values
         usar = falt & (racha <= HUECO_MAX)
         if v == "WDR":
@@ -244,7 +241,7 @@ for est in base["estacion"].unique():
 for v in VARS + ["WDR"]:
     final[v + "_imp"] = final[v + "_imp"].astype(int)
 
-# filas que no existían en el Excel: sólo se guardan si se imputó algo en ellas
+# Filas que no existían en el Excel: sólo se guardan si se imputó algo en ellas.
 imp_cols = [v + "_imp" for v in VARS + ["WDR"]]
 final = final[final["fila_original"] | (final[imp_cols].sum(axis=1) > 0)].copy()
 final["fila_agregada"] = (~final["fila_original"]).astype(int)
@@ -267,7 +264,7 @@ for v in VARS + ["WDR"]:
     final[v] = final[v].round(4)
 final["fecha_hora"] = final["fecha_hora"].dt.strftime("%Y-%m-%d %H:%M:%S")
 final = final.sort_values(["estacion", "fecha_hora"])
-# un archivo por semestre para quedar muy por debajo del límite de subida de GitHub
+# Un archivo por semestre.
 sem = final["fecha_hora"].str[:4] + "_s" + np.where(final["fecha_hora"].str[5:7].astype(int) <= 6, "1", "2")
 for a, g in final.groupby(sem):
     ruta = f"data/imputada/sima_imputada_{a}.csv.gz"

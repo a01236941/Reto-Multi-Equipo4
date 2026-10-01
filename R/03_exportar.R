@@ -1,12 +1,11 @@
-# La división por año permite subir la base desde el navegador de GitHub.
-# No modifica mediciones, columnas ni criterios de preparación.
+# Exportación de la base limpia en un archivo por año.
 exportar_sima <- function(limpios) {
   dir.create("data/processed",recursive=TRUE,showWarnings=FALSE)
   exportar <- data.table::copy(limpios)
   exportar[, fecha_hora := format(fecha_hora,"%Y-%m-%d %H:%M:%S",tz="UTC")]
   data.table::setcolorder(exportar,c("fecha_hora","estacion",variables_sima,
     setdiff(names(exportar),c("fecha_hora","estacion",variables_sima))))
-  # Copia consolidada para uso local. Se excluye de Git por superar 25 MiB.
+  # Copia consolidada para uso local (no se sube al repositorio por tamaño).
   data.table::fwrite(exportar,"data/processed/sima_horario.csv.gz",na="NA")
   manifiesto <- list()
   for (aa in sort(unique(exportar$anio))) {

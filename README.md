@@ -33,8 +33,4 @@ Para repetir la imputación: `pip install -r python/requirements.txt` y después
 
 La imputación anterior en R (`R/04_imputar.R`, columnas `*_preparado` de `data/processed`) se conserva como primera versión; la que se usa en el informe es la de SAITS.
 
-El texto de las secciones 2 a 4 de la Parte 2 está en `reports/secciones_2_3_4_final.md`.
-
-## Uso de IA
-
-Se usaron Codex (OpenAI) y Claude (Anthropic) como apoyo para el código y la redacción. El equipo revisó el contenido y asume la responsabilidad del trabajo.
+El diccionario de variables y los criterios de limpieza están en `reports/criterios_y_diccionario.md`.

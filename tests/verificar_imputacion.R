@@ -21,8 +21,7 @@ for (v in variables_imputar) {
   if (length(elegido)) stopifnot(met[periodo==2025 & variable==v & metodo==elegido,MAE] ==
     min(met[periodo==2025 & variable==v,MAE]))
 }
-# Prueba adversarial de fuga: cambiar el bloque oculto y todas las horas futuras
-# no puede cambiar las predicciones hechas desde su origen.
+# Prueba de fuga de información: modificar las horas futuras no debe cambiar las predicciones.
 tt <- seq(as.POSIXct("2025-01-01",tz="UTC"),by="hour",length.out=120)
 y <- seq_len(120)+sin(seq_len(120)); cambiado <- y; cambiado[70:120] <- 999999
 b <- c(0,.7,.1,.2,0,0,0,0)
