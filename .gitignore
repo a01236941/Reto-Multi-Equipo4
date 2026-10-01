@@ -6,3 +6,8 @@ renv/staging/
 output/
 
 /.quarto/
+
+# Caches y archivos temporales; los originales y la base preparada sí se versionan.
+*.tmp
+*.log
+~$*

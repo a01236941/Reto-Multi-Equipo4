@@ -1,0 +1,16 @@
+variable,registros,faltantes,imputados,metodo,porcentaje_total,porcentaje_faltantes
+"CO",830908,111808,0,"sin_imputacion_de_mediciones",0,0
+"NO",830908,134880,0,"sin_imputacion_de_mediciones",0,0
+"NO2",830908,138233,0,"sin_imputacion_de_mediciones",0,0
+"NOX",830908,133807,0,"sin_imputacion_de_mediciones",0,0
+"O3",830908,113198,0,"sin_imputacion_de_mediciones",0,0
+"PM10",830908,36691,0,"sin_imputacion_de_mediciones",0,0
+"PM2.5",830908,199373,0,"sin_imputacion_de_mediciones",0,0
+"PRS",830908,46049,0,"sin_imputacion_de_mediciones",0,0
+"RAINF",830908,40783,0,"sin_imputacion_de_mediciones",0,0
+"RH",830908,104239,0,"sin_imputacion_de_mediciones",0,0
+"SO2",830908,116991,0,"sin_imputacion_de_mediciones",0,0
+"SR",830908,46622,0,"sin_imputacion_de_mediciones",0,0
+"TOUT",830908,60017,0,"sin_imputacion_de_mediciones",0,0
+"WSR",830908,54473,0,"sin_imputacion_de_mediciones",0,0
+"WDR",830908,66131,0,"sin_imputacion_de_mediciones",0,0
