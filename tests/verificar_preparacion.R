@@ -49,4 +49,5 @@ for (v in variables_sima) {
 manifiesto <- fread("reports/auditoria/manifiesto_originales.csv")
 for (i in seq_len(nrow(manifiesto))) stopifnot(
   digest::digest(file=file.path("data/raw",manifiesto$archivo[i]),algo="sha256")==manifiesto$sha256[i])
+source("tests/verificar_exportacion.R",encoding="UTF-8")
 cat("Verificaciones correctas: fechas, claves, dirección circular, auditoría y originales.\n")

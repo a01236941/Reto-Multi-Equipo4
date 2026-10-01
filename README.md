@@ -9,16 +9,19 @@ La base preparada conserva valores faltantes. El horizonte de predicción, la di
 | Archivo o carpeta | Contenido |
 |---|---|
 | `data/raw/` | Los siete Excel originales del ZIP proporcionado, 2020–julio de 2026 |
-| `data/processed/sima_horario.csv.gz` | Tabla preparada con 830 908 filas, sin imputación de mediciones |
+| `data/processed/sima_horario_2020.csv.gz` … `sima_horario_2026.csv.gz` | La base preparada dividida en siete años: 830 908 filas en total, sin imputación de mediciones |
 | `R/01_importar.R` | Importación de todas las hojas desde rutas locales |
 | `R/02_preparar.R` | Fechas, duplicados, correcciones, faltantes, alertas y atributos derivados |
+| `R/03_exportar.R` | Exportación por año para que los archivos puedan subirse desde el navegador |
 | `scripts/01_preparar_datos.R` | Ejecución completa desde los Excel |
 | `scripts/02_generar_informe.R` | Redacción de las secciones 2–4 con cifras de la auditoría |
+| `scripts/03_leer_base_preparada.R` | Lectura y unión de los siete CSV ya preparados |
 | `reports/secciones_2_3_4.md` | Borrador para integrar al informe del equipo |
 | `reports/auditoria/` | Resultados por variable, estación y año; cambios y procedencia |
 | `reports/criterios_y_diccionario.md` | Definiciones, reglas, denominadores y límites del análisis |
 | `tests/verificar_preparacion.R` | Comprobaciones de fechas, claves, transformación circular y cifras |
 | `renv.lock` | Versiones de R y paquetes del proyecto |
+| `GUIA_PASO_A_PASO.md` | Qué subir, cómo ejecutarlo, qué copiar al informe y qué falta decidir |
 
 Los Excel que ya existían directamente en `data/` y el cuaderno Quarto original se conservaron. Sus huellas difieren de las versiones 2024 y 2025 del ZIP. La nueva importación lee **solamente `data/raw/`** para no mezclar versiones ni duplicarlas.
 
@@ -44,11 +47,11 @@ renv::restore(packages = c("readxl", "data.table", "digest", "jsonlite", "renv")
 
 La ejecución de esta aportación se verificó con R 4.6.1 y la biblioteca del proyecto. Se restauraron sus dependencias; no se comprobó la ejecución del Quarto anterior ni de todas las dependencias de la plantilla. `data.table` se actualizó de 1.18.4 a 1.18.6.1 y se registró con `renv::snapshot(..., update = TRUE)` sin retirar los paquetes del equipo. La restauración inicial de 1.18.4 requería compilación y este equipo no tenía `make`.
 
-El pipeline no instala paquetes, no abre Google Drive y no utiliza rutas personales. Las copias RDS de trabajo quedan en `output/cache/`, fuera de Git. Para leer directamente el CSV comprimido con R base:
+El pipeline no instala paquetes, no abre Google Drive y no utiliza rutas personales. Las copias RDS de trabajo quedan en `output/cache/`, fuera de Git. También genera `data/processed/sima_horario.csv.gz` como copia consolidada local: supera los 25 MiB permitidos para subir un archivo desde el navegador y no se versiona en esta revisión. Los siete CSV anuales contienen las mismas filas y columnas. Para leer la base compartida con R base:
 
 ```r
-base <- read.csv(gzfile("data/processed/sima_horario.csv.gz"),
-                 na.strings = "NA", check.names = FALSE)
+source("scripts/03_leer_base_preparada.R", encoding = "UTF-8")
+dim(base_sima)
 ```
 
 ## Decisiones para el modelo de ozono
@@ -76,3 +79,5 @@ Referencias: [colaboración con renv](https://rstudio.github.io/renv/articles/co
 Repositorio: https://github.com/a01236941/Reto-Multi-Equipo4. Esta aportación se prepara en la rama `preparacion-sima`. Su publicación remota se registra en `reports/estado_publicacion.md`; tener una copia local no significa que GitHub ya contenga los cambios.
 
 Codex de OpenAI apoyó la adaptación del código, la auditoría, las verificaciones y la redacción. Los números proceden de la ejecución sobre los archivos. Corresponde al equipo revisar las decisiones y contrastar las unidades, banderas y rangos con los documentos del socio formador antes de entregar.
+
+Para la subida desde el navegador, seguir `GUIA_PASO_A_PASO.md`. No se sube el ZIP como un único archivo: se extrae y se suben sus carpetas y archivos. [Límites de subida de GitHub](https://docs.github.com/en/repositories/working-with-files/managing-files/adding-a-file-to-a-repository).
