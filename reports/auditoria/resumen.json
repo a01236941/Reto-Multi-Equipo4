@@ -9,10 +9,12 @@
   "celdas_corregidas": 322,
   "faltantes_iniciales": 1402973,
   "faltantes_finales": 1403295,
-  "mediciones_imputadas": 0,
+  "mediciones_imputadas": 152594,
   "celdas_atipicas": 144656,
   "celdas_evaluadas_atipicos": 9439534,
   "filas_con_alerta_estadistica": 97282,
   "huecos_interiores": 187,
-  "horas_borde": 8017
+  "horas_borde": 8017,
+  "faltantes_base_uso": 1250701,
+  "columnas_exportadas": 89
 }

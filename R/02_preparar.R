@@ -139,8 +139,7 @@ preparar_sima <- function(entrada, auditoria="reports/auditoria") {
   escribir(faltantes,"faltantes_por_variable.csv")
   escribir(tabla_faltantes(x,variables_sima,c("estacion","anio")),"faltantes_estacion_anio.csv")
   escribir(tabla_faltantes(x,variables_sima,"estacion"),"faltantes_por_estacion.csv")
-  # No se rellenan concentraciones ni meteorología antes de definir objetivo,
-  # horizonte, partición temporal y unidades/rangos definitivos.
+  # Esta etapa conserva NA. R/04_imputar.R añade las estimaciones por separado.
   imputacion <- despues[,.(variable, registros, faltantes, imputados=0L,
     metodo="sin_imputacion_de_mediciones", porcentaje_total=0, porcentaje_faltantes=0)]
   escribir(imputacion,"imputacion.csv")

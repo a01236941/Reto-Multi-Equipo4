@@ -36,7 +36,9 @@ Se normalizan vacíos y códigos textuales `NA`, `N/A`, `NULL` y `NaN`, y se reg
 
 Los porcentajes por variable usan como denominador las filas existentes. Los porcentajes globales usan 830 908 × 15 = 12 463 620 celdas de medición. La ausencia de una fila horaria se contabiliza en `horas_sin_fila_interiores.csv`, no dentro de esos porcentajes. Las hojas ausentes aparecen en `cobertura_estacion_anio.csv`.
 
-No se imputan mediciones en la base general. `imputacion.csv` registra cero por variable y método `sin_imputacion_de_mediciones`. Esto es una decisión de esta entrega, no un método de imputación ya validado. El relleno de predictoras, si se requiere, se definirá dentro de la partición temporal de modelado. Se evita rellenar series enteras, asumir cero para lluvia ausente o utilizar interpolación con observaciones futuras para construir una predicción en tiempo real.
+Las columnas originales conservan los NA después de la limpieza. En 13 predictoras se añaden columnas `*_preparado` y `*_metodo` con estimaciones de hasta tres horas desde la última observación real. Se comparan persistencia, rezago de 24 horas y autorregresión; los resultados y porcentajes están en `imputacion.csv`. No se imputa por media ni mediana. O3 y WDR conservan sus faltantes. El detalle de ajuste, selección, prueba independiente y limitaciones está en `metodo_imputacion.md`. Se evita rellenar series enteras, asumir cero para lluvia ausente o utilizar lecturas futuras como entradas del imputador.
+
+`faltantes_por_variable.csv`, `faltantes_por_estacion.csv` y `faltantes_estacion_anio.csv` describen las mediciones tras las correcciones y **antes** de usar las columnas imputadas. `imputacion.csv` permite obtener los faltantes restantes restando `imputados` de `faltantes`. En `resumen.json`, `faltantes_finales` conserva el conteo de NA de las mediciones; `faltantes_base_uso` corresponde a la vista con predictoras preparadas. No se suman las columnas duplicadas al denominador de 15 mediciones.
 
 ## Alertas estadísticas
 
@@ -58,5 +60,7 @@ Las distribuciones de lluvia, radiación y contaminantes pueden ser asimétricas
 | `mes_sin`, `mes_cos` | Ciclo de 12 meses |
 | `WDR_sin`, `WDR_cos` | Representación circular de dirección, sin magnitud del viento |
 | `viento_calma` | WSR = 0; NA si falta WSR |
+| `*_preparado` | Copia de la variable con estimaciones sólo donde faltaba una medición |
+| `*_metodo` | Observado, sin imputar o nombre del imputador seleccionado |
 
 WDR = 360 y WDR = 0 generan las mismas componentes. Si WSR = 0, las componentes se dejan vacías; si falta WSR pero existe WDR, la dirección se conserva y `viento_calma` queda NA. La dirección no se sustituye por una media aritmética de grados.
