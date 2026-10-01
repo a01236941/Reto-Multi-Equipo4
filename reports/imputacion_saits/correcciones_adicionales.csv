@@ -1,0 +1,713 @@
+estacion,fecha_hora,valor_original,variable,motivo
+NTE,2020-03-27 01:00:00,-50.0,TOUT,temperatura fuera de -15 a 50 °C
+NTE,2020-03-28 01:00:00,-50.0,TOUT,temperatura fuera de -15 a 50 °C
+NTE,2020-03-29 01:00:00,-50.0,TOUT,temperatura fuera de -15 a 50 °C
+NTE,2020-03-29 02:00:00,-50.0,TOUT,temperatura fuera de -15 a 50 °C
+NTE,2020-04-01 02:00:00,-49.99,TOUT,temperatura fuera de -15 a 50 °C
+NTE,2020-04-01 03:00:00,-49.99,TOUT,temperatura fuera de -15 a 50 °C
+NTE,2020-04-01 04:00:00,-50.0,TOUT,temperatura fuera de -15 a 50 °C
+NTE,2020-04-01 05:00:00,-50.0,TOUT,temperatura fuera de -15 a 50 °C
+NTE,2020-04-02 11:00:00,-50.05,TOUT,temperatura fuera de -15 a 50 °C
+NTE,2020-04-02 12:00:00,-50.1,TOUT,temperatura fuera de -15 a 50 °C
+NTE,2020-04-02 13:00:00,-50.12,TOUT,temperatura fuera de -15 a 50 °C
+NTE,2020-04-02 14:00:00,-50.22,TOUT,temperatura fuera de -15 a 50 °C
+NTE,2020-04-02 15:00:00,-50.3,TOUT,temperatura fuera de -15 a 50 °C
+NTE,2020-04-02 16:00:00,-50.3,TOUT,temperatura fuera de -15 a 50 °C
+NTE,2020-04-02 17:00:00,-50.24,TOUT,temperatura fuera de -15 a 50 °C
+NTE,2020-04-02 18:00:00,-50.1,TOUT,temperatura fuera de -15 a 50 °C
+NTE,2020-04-02 19:00:00,-50.02,TOUT,temperatura fuera de -15 a 50 °C
+NTE,2020-04-02 20:00:00,-50.0,TOUT,temperatura fuera de -15 a 50 °C
+NTE,2020-04-03 01:00:00,-51.88,TOUT,temperatura fuera de -15 a 50 °C
+NTE,2020-04-03 02:00:00,-52.33,TOUT,temperatura fuera de -15 a 50 °C
+NTE,2020-04-03 03:00:00,-52.77,TOUT,temperatura fuera de -15 a 50 °C
+NTE,2020-04-03 04:00:00,-53.57,TOUT,temperatura fuera de -15 a 50 °C
+NTE,2020-04-03 05:00:00,-54.3,TOUT,temperatura fuera de -15 a 50 °C
+NTE,2020-04-03 06:00:00,-54.25,TOUT,temperatura fuera de -15 a 50 °C
+NTE,2020-04-03 07:00:00,-54.56,TOUT,temperatura fuera de -15 a 50 °C
+NTE,2020-04-03 08:00:00,-55.41,TOUT,temperatura fuera de -15 a 50 °C
+NTE,2020-04-03 09:00:00,-56.15,TOUT,temperatura fuera de -15 a 50 °C
+NTE,2020-04-03 10:00:00,-57.25,TOUT,temperatura fuera de -15 a 50 °C
+NTE,2020-04-03 11:00:00,-58.58,TOUT,temperatura fuera de -15 a 50 °C
+NTE,2020-04-03 12:00:00,-59.79,TOUT,temperatura fuera de -15 a 50 °C
+NTE,2020-04-03 13:00:00,-58.72,TOUT,temperatura fuera de -15 a 50 °C
+NTE,2020-04-03 14:00:00,-56.71,TOUT,temperatura fuera de -15 a 50 °C
+NTE,2020-04-03 15:00:00,-55.45,TOUT,temperatura fuera de -15 a 50 °C
+NTE,2020-04-03 16:00:00,-55.5,TOUT,temperatura fuera de -15 a 50 °C
+NTE,2020-04-03 17:00:00,-56.03,TOUT,temperatura fuera de -15 a 50 °C
+NTE,2020-04-03 18:00:00,-56.66,TOUT,temperatura fuera de -15 a 50 °C
+NTE,2020-04-03 19:00:00,-57.97,TOUT,temperatura fuera de -15 a 50 °C
+NTE,2020-04-03 20:00:00,-59.64,TOUT,temperatura fuera de -15 a 50 °C
+NTE,2020-04-03 21:00:00,-59.74,TOUT,temperatura fuera de -15 a 50 °C
+NTE,2020-04-03 22:00:00,-59.41,TOUT,temperatura fuera de -15 a 50 °C
+NTE,2020-04-03 23:00:00,-58.91,TOUT,temperatura fuera de -15 a 50 °C
+NTE,2020-04-04 00:00:00,-59.38,TOUT,temperatura fuera de -15 a 50 °C
+NTE,2020-04-04 01:00:00,-63.57,TOUT,temperatura fuera de -15 a 50 °C
+NTE,2020-04-04 02:00:00,-65.47,TOUT,temperatura fuera de -15 a 50 °C
+NTE,2020-04-04 03:00:00,-67.49,TOUT,temperatura fuera de -15 a 50 °C
+NTE,2020-04-04 04:00:00,-65.11,TOUT,temperatura fuera de -15 a 50 °C
+NTE,2020-04-04 05:00:00,-66.04,TOUT,temperatura fuera de -15 a 50 °C
+NTE,2020-04-04 06:00:00,-61.53,TOUT,temperatura fuera de -15 a 50 °C
+NTE,2020-04-04 07:00:00,-56.48,TOUT,temperatura fuera de -15 a 50 °C
+NTE,2020-04-04 08:00:00,-53.72,TOUT,temperatura fuera de -15 a 50 °C
+NTE,2020-04-04 09:00:00,-52.61,TOUT,temperatura fuera de -15 a 50 °C
+NTE,2020-04-04 10:00:00,-52.37,TOUT,temperatura fuera de -15 a 50 °C
+NTE,2020-04-04 11:00:00,-52.58,TOUT,temperatura fuera de -15 a 50 °C
+NTE,2020-04-04 12:00:00,-52.98,TOUT,temperatura fuera de -15 a 50 °C
+NTE,2020-04-04 13:00:00,-52.66,TOUT,temperatura fuera de -15 a 50 °C
+NTE,2020-04-04 14:00:00,-52.5,TOUT,temperatura fuera de -15 a 50 °C
+NTE,2020-04-04 15:00:00,-52.29,TOUT,temperatura fuera de -15 a 50 °C
+NTE,2020-04-04 16:00:00,-51.8,TOUT,temperatura fuera de -15 a 50 °C
+NTE,2020-04-04 17:00:00,-51.26,TOUT,temperatura fuera de -15 a 50 °C
+NTE,2020-04-04 18:00:00,-50.78,TOUT,temperatura fuera de -15 a 50 °C
+NTE,2020-04-04 19:00:00,-50.51,TOUT,temperatura fuera de -15 a 50 °C
+NTE,2020-04-04 20:00:00,-50.36,TOUT,temperatura fuera de -15 a 50 °C
+NTE,2020-04-04 21:00:00,-50.3,TOUT,temperatura fuera de -15 a 50 °C
+NTE,2020-04-04 22:00:00,-50.25,TOUT,temperatura fuera de -15 a 50 °C
+NTE,2020-04-04 23:00:00,-50.21,TOUT,temperatura fuera de -15 a 50 °C
+NTE,2020-04-05 21:00:00,-50.47,TOUT,temperatura fuera de -15 a 50 °C
+NTE,2020-04-05 22:00:00,-50.47,TOUT,temperatura fuera de -15 a 50 °C
+NTE,2020-04-06 00:00:00,-50.45,TOUT,temperatura fuera de -15 a 50 °C
+NTE,2020-04-06 01:00:00,-50.48,TOUT,temperatura fuera de -15 a 50 °C
+NTE,2020-04-06 02:00:00,-50.5,TOUT,temperatura fuera de -15 a 50 °C
+NTE,2020-04-06 03:00:00,-50.53,TOUT,temperatura fuera de -15 a 50 °C
+NTE,2020-04-06 04:00:00,-50.55,TOUT,temperatura fuera de -15 a 50 °C
+NTE,2020-04-06 05:00:00,-50.54,TOUT,temperatura fuera de -15 a 50 °C
+NTE,2020-04-06 06:00:00,-50.57,TOUT,temperatura fuera de -15 a 50 °C
+NTE,2020-04-06 07:00:00,-50.55,TOUT,temperatura fuera de -15 a 50 °C
+NTE,2020-04-06 09:00:00,-50.69,TOUT,temperatura fuera de -15 a 50 °C
+NTE,2020-04-06 10:00:00,-50.83,TOUT,temperatura fuera de -15 a 50 °C
+NTE,2020-04-06 11:00:00,-50.9,TOUT,temperatura fuera de -15 a 50 °C
+NTE,2020-04-06 12:00:00,-51.14,TOUT,temperatura fuera de -15 a 50 °C
+NTE,2020-04-06 13:00:00,-51.29,TOUT,temperatura fuera de -15 a 50 °C
+NTE,2020-04-06 14:00:00,-51.32,TOUT,temperatura fuera de -15 a 50 °C
+NTE,2020-04-06 15:00:00,-51.29,TOUT,temperatura fuera de -15 a 50 °C
+NTE,2020-04-06 16:00:00,-51.38,TOUT,temperatura fuera de -15 a 50 °C
+NTE,2020-04-06 17:00:00,-51.39,TOUT,temperatura fuera de -15 a 50 °C
+NTE,2020-04-06 18:00:00,-51.43,TOUT,temperatura fuera de -15 a 50 °C
+NTE,2020-04-06 19:00:00,-51.6,TOUT,temperatura fuera de -15 a 50 °C
+NTE,2020-04-06 20:00:00,-51.83,TOUT,temperatura fuera de -15 a 50 °C
+NTE,2020-04-06 21:00:00,-52.13,TOUT,temperatura fuera de -15 a 50 °C
+NTE,2020-04-06 22:00:00,-52.04,TOUT,temperatura fuera de -15 a 50 °C
+NTE,2020-04-06 23:00:00,-52.63,TOUT,temperatura fuera de -15 a 50 °C
+NTE,2020-04-07 00:00:00,-52.72,TOUT,temperatura fuera de -15 a 50 °C
+NTE,2020-04-07 01:00:00,-53.32,TOUT,temperatura fuera de -15 a 50 °C
+NTE,2020-04-07 02:00:00,-53.2,TOUT,temperatura fuera de -15 a 50 °C
+NTE,2020-04-07 03:00:00,-54.23,TOUT,temperatura fuera de -15 a 50 °C
+NTE,2020-04-07 04:00:00,-55.01,TOUT,temperatura fuera de -15 a 50 °C
+NTE,2020-04-07 05:00:00,-54.91,TOUT,temperatura fuera de -15 a 50 °C
+NTE,2020-04-07 06:00:00,-55.92,TOUT,temperatura fuera de -15 a 50 °C
+NTE,2020-04-07 07:00:00,-56.64,TOUT,temperatura fuera de -15 a 50 °C
+NTE,2020-04-07 08:00:00,-56.34,TOUT,temperatura fuera de -15 a 50 °C
+NTE,2020-04-07 09:00:00,-57.67,TOUT,temperatura fuera de -15 a 50 °C
+NTE,2020-04-07 10:00:00,-58.15,TOUT,temperatura fuera de -15 a 50 °C
+NTE,2020-04-07 11:00:00,-57.92,TOUT,temperatura fuera de -15 a 50 °C
+NTE,2020-04-07 12:00:00,-55.35,TOUT,temperatura fuera de -15 a 50 °C
+NTE,2020-04-07 13:00:00,-54.22,TOUT,temperatura fuera de -15 a 50 °C
+NTE,2020-04-07 14:00:00,-53.0,TOUT,temperatura fuera de -15 a 50 °C
+NTE,2020-04-07 15:00:00,-53.34,TOUT,temperatura fuera de -15 a 50 °C
+NTE,2020-04-07 16:00:00,-53.38,TOUT,temperatura fuera de -15 a 50 °C
+NTE,2020-04-07 17:00:00,-54.35,TOUT,temperatura fuera de -15 a 50 °C
+NTE,2020-04-07 18:00:00,-56.45,TOUT,temperatura fuera de -15 a 50 °C
+NTE,2020-04-07 19:00:00,-58.72,TOUT,temperatura fuera de -15 a 50 °C
+NTE,2020-04-07 20:00:00,-59.9,TOUT,temperatura fuera de -15 a 50 °C
+NTE,2020-04-07 21:00:00,-59.94,TOUT,temperatura fuera de -15 a 50 °C
+NTE,2020-04-07 22:00:00,-61.68,TOUT,temperatura fuera de -15 a 50 °C
+NTE,2020-04-07 23:00:00,-62.49,TOUT,temperatura fuera de -15 a 50 °C
+NTE,2020-04-08 00:00:00,-63.82,TOUT,temperatura fuera de -15 a 50 °C
+NTE,2020-04-08 01:00:00,-62.83,TOUT,temperatura fuera de -15 a 50 °C
+NTE,2020-04-08 02:00:00,-63.35,TOUT,temperatura fuera de -15 a 50 °C
+NTE,2020-04-08 03:00:00,-62.06,TOUT,temperatura fuera de -15 a 50 °C
+NTE,2020-04-08 04:00:00,-61.6,TOUT,temperatura fuera de -15 a 50 °C
+NTE,2020-04-08 05:00:00,-60.81,TOUT,temperatura fuera de -15 a 50 °C
+NTE,2020-04-08 06:00:00,-59.89,TOUT,temperatura fuera de -15 a 50 °C
+NTE,2020-04-08 07:00:00,-57.54,TOUT,temperatura fuera de -15 a 50 °C
+NTE,2020-04-08 08:00:00,-56.48,TOUT,temperatura fuera de -15 a 50 °C
+NTE,2020-04-08 09:00:00,-57.01,TOUT,temperatura fuera de -15 a 50 °C
+NTE,2020-04-08 10:00:00,-55.38,TOUT,temperatura fuera de -15 a 50 °C
+NTE,2020-04-08 11:00:00,-53.63,TOUT,temperatura fuera de -15 a 50 °C
+NTE,2020-04-08 12:00:00,-52.74,TOUT,temperatura fuera de -15 a 50 °C
+NTE,2020-04-08 13:00:00,-52.34,TOUT,temperatura fuera de -15 a 50 °C
+NTE,2020-04-08 14:00:00,-51.8,TOUT,temperatura fuera de -15 a 50 °C
+NTE,2020-04-08 15:00:00,-51.63,TOUT,temperatura fuera de -15 a 50 °C
+NTE,2020-04-08 16:00:00,-51.92,TOUT,temperatura fuera de -15 a 50 °C
+NTE,2020-04-08 17:00:00,-55.28,TOUT,temperatura fuera de -15 a 50 °C
+NTE,2020-04-08 18:00:00,-54.27,TOUT,temperatura fuera de -15 a 50 °C
+NTE,2020-04-08 19:00:00,-52.71,TOUT,temperatura fuera de -15 a 50 °C
+NTE,2020-04-08 20:00:00,-52.22,TOUT,temperatura fuera de -15 a 50 °C
+NTE,2020-04-08 21:00:00,-51.79,TOUT,temperatura fuera de -15 a 50 °C
+NTE,2020-04-08 22:00:00,-51.48,TOUT,temperatura fuera de -15 a 50 °C
+NTE,2020-04-08 23:00:00,-51.23,TOUT,temperatura fuera de -15 a 50 °C
+NTE,2020-04-09 00:00:00,-51.1,TOUT,temperatura fuera de -15 a 50 °C
+NTE,2020-04-09 01:00:00,-51.03,TOUT,temperatura fuera de -15 a 50 °C
+NTE,2020-04-09 02:00:00,-51.0,TOUT,temperatura fuera de -15 a 50 °C
+NTE,2020-04-09 03:00:00,-50.93,TOUT,temperatura fuera de -15 a 50 °C
+NTE,2020-04-09 04:00:00,-50.84,TOUT,temperatura fuera de -15 a 50 °C
+NTE,2020-04-09 05:00:00,-50.78,TOUT,temperatura fuera de -15 a 50 °C
+NTE,2020-04-09 06:00:00,-50.7,TOUT,temperatura fuera de -15 a 50 °C
+NTE,2020-04-09 07:00:00,-50.69,TOUT,temperatura fuera de -15 a 50 °C
+NTE,2020-04-09 08:00:00,-50.7,TOUT,temperatura fuera de -15 a 50 °C
+NTE,2020-04-09 09:00:00,-50.85,TOUT,temperatura fuera de -15 a 50 °C
+NTE,2020-04-09 10:00:00,-51.11,TOUT,temperatura fuera de -15 a 50 °C
+NTE,2020-04-09 11:00:00,-51.61,TOUT,temperatura fuera de -15 a 50 °C
+NTE,2020-04-09 12:00:00,-52.25,TOUT,temperatura fuera de -15 a 50 °C
+NTE,2020-04-09 13:00:00,-52.56,TOUT,temperatura fuera de -15 a 50 °C
+NTE,2020-04-09 14:00:00,-52.92,TOUT,temperatura fuera de -15 a 50 °C
+NTE,2020-04-09 15:00:00,-52.78,TOUT,temperatura fuera de -15 a 50 °C
+NTE,2020-04-09 16:00:00,-51.55,TOUT,temperatura fuera de -15 a 50 °C
+NTE,2020-04-09 17:00:00,-50.0,TOUT,temperatura fuera de -15 a 50 °C
+NTE,2020-04-10 01:00:00,-50.18,TOUT,temperatura fuera de -15 a 50 °C
+NTE,2020-04-10 02:00:00,-50.12,TOUT,temperatura fuera de -15 a 50 °C
+NTE,2020-04-10 03:00:00,-50.1,TOUT,temperatura fuera de -15 a 50 °C
+NTE,2020-04-10 04:00:00,-50.1,TOUT,temperatura fuera de -15 a 50 °C
+NTE,2020-04-10 09:00:00,-50.21,TOUT,temperatura fuera de -15 a 50 °C
+NTE,2020-04-10 10:00:00,-50.31,TOUT,temperatura fuera de -15 a 50 °C
+NTE,2020-04-10 11:00:00,-50.13,TOUT,temperatura fuera de -15 a 50 °C
+NTE,2020-04-10 12:00:00,-50.5,TOUT,temperatura fuera de -15 a 50 °C
+NTE,2020-04-10 13:00:00,-51.02,TOUT,temperatura fuera de -15 a 50 °C
+NTE,2020-04-10 14:00:00,-53.36,TOUT,temperatura fuera de -15 a 50 °C
+NTE,2020-04-10 15:00:00,-56.32,TOUT,temperatura fuera de -15 a 50 °C
+NTE,2020-04-10 16:00:00,-56.33,TOUT,temperatura fuera de -15 a 50 °C
+NTE,2020-04-10 17:00:00,-55.0,TOUT,temperatura fuera de -15 a 50 °C
+NTE,2020-04-10 18:00:00,-57.91,TOUT,temperatura fuera de -15 a 50 °C
+NTE,2020-04-10 19:00:00,-60.19,TOUT,temperatura fuera de -15 a 50 °C
+NTE,2020-04-10 20:00:00,-60.79,TOUT,temperatura fuera de -15 a 50 °C
+NTE,2020-04-10 21:00:00,-60.85,TOUT,temperatura fuera de -15 a 50 °C
+NTE,2020-04-10 22:00:00,-61.23,TOUT,temperatura fuera de -15 a 50 °C
+NTE,2020-04-10 23:00:00,-57.68,TOUT,temperatura fuera de -15 a 50 °C
+NTE,2020-04-11 00:00:00,-56.01,TOUT,temperatura fuera de -15 a 50 °C
+NTE,2020-04-11 01:00:00,-53.99,TOUT,temperatura fuera de -15 a 50 °C
+NTE,2020-04-11 02:00:00,-52.48,TOUT,temperatura fuera de -15 a 50 °C
+NTE,2020-04-11 03:00:00,-52.82,TOUT,temperatura fuera de -15 a 50 °C
+NTE,2020-04-11 04:00:00,-52.95,TOUT,temperatura fuera de -15 a 50 °C
+NTE,2020-04-11 05:00:00,-53.53,TOUT,temperatura fuera de -15 a 50 °C
+NTE,2020-04-11 07:00:00,-53.85,TOUT,temperatura fuera de -15 a 50 °C
+NTE,2020-04-11 08:00:00,-53.45,TOUT,temperatura fuera de -15 a 50 °C
+NTE,2020-04-11 09:00:00,-54.1,TOUT,temperatura fuera de -15 a 50 °C
+NTE,2020-04-11 10:00:00,-53.79,TOUT,temperatura fuera de -15 a 50 °C
+NTE,2020-04-11 11:00:00,-53.36,TOUT,temperatura fuera de -15 a 50 °C
+NTE,2020-04-11 12:00:00,-53.13,TOUT,temperatura fuera de -15 a 50 °C
+NTE,2020-04-11 13:00:00,-53.73,TOUT,temperatura fuera de -15 a 50 °C
+NTE,2020-04-11 14:00:00,-53.74,TOUT,temperatura fuera de -15 a 50 °C
+NTE,2020-04-11 15:00:00,-53.37,TOUT,temperatura fuera de -15 a 50 °C
+NTE,2020-04-11 16:00:00,-53.58,TOUT,temperatura fuera de -15 a 50 °C
+NTE,2020-04-11 17:00:00,-54.43,TOUT,temperatura fuera de -15 a 50 °C
+NTE,2020-04-11 18:00:00,-55.81,TOUT,temperatura fuera de -15 a 50 °C
+NTE,2020-04-11 19:00:00,-57.88,TOUT,temperatura fuera de -15 a 50 °C
+NTE,2020-04-11 20:00:00,-58.45,TOUT,temperatura fuera de -15 a 50 °C
+NTE,2020-04-11 21:00:00,-59.64,TOUT,temperatura fuera de -15 a 50 °C
+NTE,2020-04-11 22:00:00,-61.05,TOUT,temperatura fuera de -15 a 50 °C
+NTE,2020-04-11 23:00:00,-61.43,TOUT,temperatura fuera de -15 a 50 °C
+NTE,2020-04-12 00:00:00,-62.41,TOUT,temperatura fuera de -15 a 50 °C
+NTE,2020-04-12 01:00:00,-63.77,TOUT,temperatura fuera de -15 a 50 °C
+NTE,2020-04-12 02:00:00,-63.46,TOUT,temperatura fuera de -15 a 50 °C
+NTE,2020-04-12 03:00:00,-66.57,TOUT,temperatura fuera de -15 a 50 °C
+NTE,2020-04-12 04:00:00,-65.39,TOUT,temperatura fuera de -15 a 50 °C
+NTE,2020-04-12 05:00:00,-64.96,TOUT,temperatura fuera de -15 a 50 °C
+NTE,2020-04-12 06:00:00,-52.05,TOUT,temperatura fuera de -15 a 50 °C
+NTE,2020-04-12 07:00:00,-50.45,TOUT,temperatura fuera de -15 a 50 °C
+NTE,2020-04-12 08:00:00,-50.21,TOUT,temperatura fuera de -15 a 50 °C
+NTE,2020-04-12 09:00:00,-50.11,TOUT,temperatura fuera de -15 a 50 °C
+NTE,2020-04-12 10:00:00,-50.04,TOUT,temperatura fuera de -15 a 50 °C
+NTE,2020-04-12 11:00:00,-50.0,TOUT,temperatura fuera de -15 a 50 °C
+NTE,2020-04-13 01:00:00,-50.0,TOUT,temperatura fuera de -15 a 50 °C
+NTE,2020-04-13 02:00:00,-50.0,TOUT,temperatura fuera de -15 a 50 °C
+NTE,2020-04-14 01:00:00,-50.0,TOUT,temperatura fuera de -15 a 50 °C
+NTE,2020-04-15 01:00:00,-50.0,TOUT,temperatura fuera de -15 a 50 °C
+NTE,2020-04-15 02:00:00,-50.0,TOUT,temperatura fuera de -15 a 50 °C
+NTE,2020-04-16 01:00:00,-50.0,TOUT,temperatura fuera de -15 a 50 °C
+NTE,2020-04-16 02:00:00,-50.0,TOUT,temperatura fuera de -15 a 50 °C
+NTE,2020-04-17 01:00:00,-50.21,TOUT,temperatura fuera de -15 a 50 °C
+NTE,2020-04-17 02:00:00,-50.22,TOUT,temperatura fuera de -15 a 50 °C
+NTE,2020-04-17 03:00:00,-50.24,TOUT,temperatura fuera de -15 a 50 °C
+NTE,2020-04-17 04:00:00,-50.27,TOUT,temperatura fuera de -15 a 50 °C
+NTE,2020-04-17 05:00:00,-50.27,TOUT,temperatura fuera de -15 a 50 °C
+NTE,2020-04-17 06:00:00,-50.28,TOUT,temperatura fuera de -15 a 50 °C
+NTE,2020-04-17 07:00:00,-50.29,TOUT,temperatura fuera de -15 a 50 °C
+NTE,2020-04-17 08:00:00,-50.28,TOUT,temperatura fuera de -15 a 50 °C
+NTE,2020-04-17 09:00:00,-50.34,TOUT,temperatura fuera de -15 a 50 °C
+NTE,2020-04-17 10:00:00,-50.35,TOUT,temperatura fuera de -15 a 50 °C
+NTE,2020-04-17 11:00:00,-50.37,TOUT,temperatura fuera de -15 a 50 °C
+NTE,2020-04-17 12:00:00,-50.46,TOUT,temperatura fuera de -15 a 50 °C
+NTE,2020-04-17 13:00:00,-50.56,TOUT,temperatura fuera de -15 a 50 °C
+NTE,2020-04-17 14:00:00,-50.64,TOUT,temperatura fuera de -15 a 50 °C
+NTE,2020-04-17 15:00:00,-50.67,TOUT,temperatura fuera de -15 a 50 °C
+NTE,2020-04-17 16:00:00,-50.81,TOUT,temperatura fuera de -15 a 50 °C
+NTE,2020-04-17 17:00:00,-51.1,TOUT,temperatura fuera de -15 a 50 °C
+NTE,2020-04-17 18:00:00,-51.65,TOUT,temperatura fuera de -15 a 50 °C
+NTE,2020-04-17 21:00:00,-53.37,TOUT,temperatura fuera de -15 a 50 °C
+NTE,2020-04-17 22:00:00,-53.74,TOUT,temperatura fuera de -15 a 50 °C
+NTE,2020-04-17 23:00:00,-54.07,TOUT,temperatura fuera de -15 a 50 °C
+NTE,2020-04-18 00:00:00,-54.37,TOUT,temperatura fuera de -15 a 50 °C
+NTE,2020-04-18 01:00:00,-53.34,TOUT,temperatura fuera de -15 a 50 °C
+NTE,2020-04-18 02:00:00,-53.21,TOUT,temperatura fuera de -15 a 50 °C
+NTE,2020-04-18 03:00:00,-52.6,TOUT,temperatura fuera de -15 a 50 °C
+NTE,2020-04-18 04:00:00,-52.31,TOUT,temperatura fuera de -15 a 50 °C
+NTE,2020-04-18 05:00:00,-52.25,TOUT,temperatura fuera de -15 a 50 °C
+NTE,2020-04-18 06:00:00,-52.01,TOUT,temperatura fuera de -15 a 50 °C
+NTE,2020-04-18 07:00:00,-52.06,TOUT,temperatura fuera de -15 a 50 °C
+NTE,2020-04-18 08:00:00,-51.88,TOUT,temperatura fuera de -15 a 50 °C
+NTE,2020-04-18 09:00:00,-51.89,TOUT,temperatura fuera de -15 a 50 °C
+NTE,2020-04-18 10:00:00,-51.95,TOUT,temperatura fuera de -15 a 50 °C
+NTE,2020-04-18 11:00:00,-52.5,TOUT,temperatura fuera de -15 a 50 °C
+NTE,2020-04-18 12:00:00,-52.7,TOUT,temperatura fuera de -15 a 50 °C
+NTE,2020-04-18 13:00:00,-53.65,TOUT,temperatura fuera de -15 a 50 °C
+NTE,2020-04-18 14:00:00,-53.45,TOUT,temperatura fuera de -15 a 50 °C
+NTE,2020-04-18 15:00:00,-52.67,TOUT,temperatura fuera de -15 a 50 °C
+NTE,2020-04-18 16:00:00,-52.88,TOUT,temperatura fuera de -15 a 50 °C
+NTE,2020-04-18 17:00:00,-53.5,TOUT,temperatura fuera de -15 a 50 °C
+NTE,2020-04-18 18:00:00,-54.82,TOUT,temperatura fuera de -15 a 50 °C
+NTE,2020-04-18 19:00:00,-55.46,TOUT,temperatura fuera de -15 a 50 °C
+NTE,2020-04-18 20:00:00,-57.28,TOUT,temperatura fuera de -15 a 50 °C
+NTE,2020-04-18 21:00:00,-57.46,TOUT,temperatura fuera de -15 a 50 °C
+NTE,2020-04-18 22:00:00,-57.34,TOUT,temperatura fuera de -15 a 50 °C
+NTE,2020-04-18 23:00:00,-57.22,TOUT,temperatura fuera de -15 a 50 °C
+NTE,2020-04-19 00:00:00,-57.96,TOUT,temperatura fuera de -15 a 50 °C
+NTE,2020-04-19 01:00:00,-59.55,TOUT,temperatura fuera de -15 a 50 °C
+NTE,2020-04-19 02:00:00,-60.5,TOUT,temperatura fuera de -15 a 50 °C
+NTE,2020-04-19 03:00:00,-61.81,TOUT,temperatura fuera de -15 a 50 °C
+NTE,2020-04-19 04:00:00,-61.03,TOUT,temperatura fuera de -15 a 50 °C
+NTE,2020-04-19 05:00:00,-60.91,TOUT,temperatura fuera de -15 a 50 °C
+NTE,2020-04-19 06:00:00,-59.61,TOUT,temperatura fuera de -15 a 50 °C
+NTE,2020-04-19 07:00:00,-58.84,TOUT,temperatura fuera de -15 a 50 °C
+NTE,2020-04-19 08:00:00,-56.46,TOUT,temperatura fuera de -15 a 50 °C
+NTE,2020-04-19 09:00:00,-54.86,TOUT,temperatura fuera de -15 a 50 °C
+NTE,2020-04-19 10:00:00,-52.88,TOUT,temperatura fuera de -15 a 50 °C
+NTE,2020-04-19 11:00:00,-50.99,TOUT,temperatura fuera de -15 a 50 °C
+NTE,2020-04-19 12:00:00,-50.43,TOUT,temperatura fuera de -15 a 50 °C
+NTE,2020-04-19 13:00:00,-50.23,TOUT,temperatura fuera de -15 a 50 °C
+NTE,2020-04-19 14:00:00,-50.15,TOUT,temperatura fuera de -15 a 50 °C
+NTE,2020-04-19 15:00:00,-50.06,TOUT,temperatura fuera de -15 a 50 °C
+NTE,2020-04-19 16:00:00,-50.01,TOUT,temperatura fuera de -15 a 50 °C
+NTE,2020-04-19 17:00:00,-50.02,TOUT,temperatura fuera de -15 a 50 °C
+NTE,2020-04-19 18:00:00,-50.05,TOUT,temperatura fuera de -15 a 50 °C
+NTE,2020-04-19 19:00:00,-50.05,TOUT,temperatura fuera de -15 a 50 °C
+NTE,2020-04-19 20:00:00,-50.03,TOUT,temperatura fuera de -15 a 50 °C
+NTE,2020-04-19 21:00:00,-50.04,TOUT,temperatura fuera de -15 a 50 °C
+NTE,2020-04-19 22:00:00,-50.04,TOUT,temperatura fuera de -15 a 50 °C
+NTE,2020-04-19 23:00:00,-50.03,TOUT,temperatura fuera de -15 a 50 °C
+NTE,2020-04-20 00:00:00,-50.04,TOUT,temperatura fuera de -15 a 50 °C
+NTE,2020-04-20 01:00:00,-50.03,TOUT,temperatura fuera de -15 a 50 °C
+NTE,2020-04-20 02:00:00,-50.02,TOUT,temperatura fuera de -15 a 50 °C
+NTE,2020-04-20 03:00:00,-50.02,TOUT,temperatura fuera de -15 a 50 °C
+NTE,2020-04-20 04:00:00,-50.0,TOUT,temperatura fuera de -15 a 50 °C
+NTE,2020-04-22 00:00:00,-60.45,TOUT,temperatura fuera de -15 a 50 °C
+NTE,2020-04-22 01:00:00,-60.41,TOUT,temperatura fuera de -15 a 50 °C
+NTE,2020-04-22 02:00:00,-61.73,TOUT,temperatura fuera de -15 a 50 °C
+NTE,2020-04-22 03:00:00,-61.06,TOUT,temperatura fuera de -15 a 50 °C
+NTE,2020-04-22 04:00:00,-61.72,TOUT,temperatura fuera de -15 a 50 °C
+NTE,2020-04-22 05:00:00,-62.96,TOUT,temperatura fuera de -15 a 50 °C
+NTE,2020-04-22 06:00:00,-61.53,TOUT,temperatura fuera de -15 a 50 °C
+NTE,2020-04-22 07:00:00,-63.6,TOUT,temperatura fuera de -15 a 50 °C
+NTE,2020-04-22 08:00:00,-61.83,TOUT,temperatura fuera de -15 a 50 °C
+NTE,2020-04-22 09:00:00,-61.2,TOUT,temperatura fuera de -15 a 50 °C
+NTE,2020-04-22 10:00:00,-58.16,TOUT,temperatura fuera de -15 a 50 °C
+NTE,2020-04-22 12:00:00,-53.86,TOUT,temperatura fuera de -15 a 50 °C
+NTE,2020-04-22 13:00:00,-52.67,TOUT,temperatura fuera de -15 a 50 °C
+NTE,2020-04-22 14:00:00,-52.38,TOUT,temperatura fuera de -15 a 50 °C
+NTE,2020-04-22 15:00:00,-52.41,TOUT,temperatura fuera de -15 a 50 °C
+NTE,2020-04-22 16:00:00,-52.42,TOUT,temperatura fuera de -15 a 50 °C
+NTE,2020-04-22 17:00:00,-52.91,TOUT,temperatura fuera de -15 a 50 °C
+NTE,2020-04-22 18:00:00,-53.74,TOUT,temperatura fuera de -15 a 50 °C
+NTE,2020-04-22 19:00:00,-55.25,TOUT,temperatura fuera de -15 a 50 °C
+NTE,2020-04-22 20:00:00,-56.29,TOUT,temperatura fuera de -15 a 50 °C
+NTE,2020-04-22 21:00:00,-57.31,TOUT,temperatura fuera de -15 a 50 °C
+NTE,2020-04-22 22:00:00,-57.56,TOUT,temperatura fuera de -15 a 50 °C
+NTE,2020-04-22 23:00:00,-57.82,TOUT,temperatura fuera de -15 a 50 °C
+NTE,2020-04-23 00:00:00,-58.64,TOUT,temperatura fuera de -15 a 50 °C
+NTE,2020-04-23 01:00:00,-59.77,TOUT,temperatura fuera de -15 a 50 °C
+NTE,2020-04-23 02:00:00,-59.59,TOUT,temperatura fuera de -15 a 50 °C
+NTE,2020-04-23 03:00:00,-61.25,TOUT,temperatura fuera de -15 a 50 °C
+NTE,2020-04-23 04:00:00,-61.45,TOUT,temperatura fuera de -15 a 50 °C
+NTE,2020-04-23 05:00:00,-60.78,TOUT,temperatura fuera de -15 a 50 °C
+NTE,2020-04-23 06:00:00,-60.9,TOUT,temperatura fuera de -15 a 50 °C
+NTE,2020-04-23 07:00:00,-59.92,TOUT,temperatura fuera de -15 a 50 °C
+NTE,2020-04-23 08:00:00,-58.46,TOUT,temperatura fuera de -15 a 50 °C
+NTE,2020-04-23 09:00:00,-56.09,TOUT,temperatura fuera de -15 a 50 °C
+NTE,2020-04-23 10:00:00,-53.97,TOUT,temperatura fuera de -15 a 50 °C
+NTE,2020-04-23 11:00:00,-52.05,TOUT,temperatura fuera de -15 a 50 °C
+NTE,2020-04-23 12:00:00,-50.67,TOUT,temperatura fuera de -15 a 50 °C
+NTE,2020-04-23 13:00:00,-50.37,TOUT,temperatura fuera de -15 a 50 °C
+NTE,2020-04-23 14:00:00,-50.28,TOUT,temperatura fuera de -15 a 50 °C
+NTE,2020-04-23 15:00:00,-50.22,TOUT,temperatura fuera de -15 a 50 °C
+NTE,2020-04-23 16:00:00,-50.17,TOUT,temperatura fuera de -15 a 50 °C
+NTE,2020-04-23 17:00:00,-50.13,TOUT,temperatura fuera de -15 a 50 °C
+NTE,2020-04-23 18:00:00,-50.09,TOUT,temperatura fuera de -15 a 50 °C
+NTE,2020-04-23 19:00:00,-50.06,TOUT,temperatura fuera de -15 a 50 °C
+NTE,2020-04-23 20:00:00,-50.04,TOUT,temperatura fuera de -15 a 50 °C
+NTE,2020-04-23 21:00:00,-50.03,TOUT,temperatura fuera de -15 a 50 °C
+NTE,2020-04-23 22:00:00,-50.02,TOUT,temperatura fuera de -15 a 50 °C
+NTE,2020-04-23 23:00:00,-50.0,TOUT,temperatura fuera de -15 a 50 °C
+NTE,2020-04-24 01:00:00,-50.16,TOUT,temperatura fuera de -15 a 50 °C
+NTE,2020-04-24 02:00:00,-50.47,TOUT,temperatura fuera de -15 a 50 °C
+NTE,2020-04-24 03:00:00,-50.89,TOUT,temperatura fuera de -15 a 50 °C
+NTE,2020-04-24 04:00:00,-51.17,TOUT,temperatura fuera de -15 a 50 °C
+NTE,2020-04-24 05:00:00,-51.23,TOUT,temperatura fuera de -15 a 50 °C
+NTE,2020-04-24 06:00:00,-51.68,TOUT,temperatura fuera de -15 a 50 °C
+NTE,2020-04-24 07:00:00,-51.65,TOUT,temperatura fuera de -15 a 50 °C
+NTE,2020-04-24 08:00:00,-51.4,TOUT,temperatura fuera de -15 a 50 °C
+NTE,2020-04-24 09:00:00,-51.63,TOUT,temperatura fuera de -15 a 50 °C
+NTE,2020-04-24 10:00:00,-51.7,TOUT,temperatura fuera de -15 a 50 °C
+NTE,2020-04-24 11:00:00,-52.21,TOUT,temperatura fuera de -15 a 50 °C
+NTE,2020-04-24 12:00:00,-53.46,TOUT,temperatura fuera de -15 a 50 °C
+NTE,2020-04-24 13:00:00,-54.73,TOUT,temperatura fuera de -15 a 50 °C
+NTE,2020-04-24 14:00:00,-55.27,TOUT,temperatura fuera de -15 a 50 °C
+NTE,2020-04-24 15:00:00,-55.64,TOUT,temperatura fuera de -15 a 50 °C
+NTE,2020-04-24 16:00:00,-55.33,TOUT,temperatura fuera de -15 a 50 °C
+NTE,2020-04-24 17:00:00,-53.21,TOUT,temperatura fuera de -15 a 50 °C
+NTE,2020-04-24 18:00:00,-50.0,TOUT,temperatura fuera de -15 a 50 °C
+NTE,2020-04-25 01:00:00,-50.0,TOUT,temperatura fuera de -15 a 50 °C
+NTE,2020-04-25 02:00:00,-50.0,TOUT,temperatura fuera de -15 a 50 °C
+NTE,2020-04-26 01:00:00,-50.8,TOUT,temperatura fuera de -15 a 50 °C
+NTE,2020-04-26 02:00:00,-50.79,TOUT,temperatura fuera de -15 a 50 °C
+NTE,2020-04-26 03:00:00,-50.77,TOUT,temperatura fuera de -15 a 50 °C
+NTE,2020-04-26 04:00:00,-50.6,TOUT,temperatura fuera de -15 a 50 °C
+NTE,2020-04-26 05:00:00,-50.5,TOUT,temperatura fuera de -15 a 50 °C
+NTE,2020-04-26 06:00:00,-50.41,TOUT,temperatura fuera de -15 a 50 °C
+NTE,2020-04-26 07:00:00,-50.38,TOUT,temperatura fuera de -15 a 50 °C
+NTE,2020-04-26 08:00:00,-50.3,TOUT,temperatura fuera de -15 a 50 °C
+NTE,2020-04-26 09:00:00,-50.3,TOUT,temperatura fuera de -15 a 50 °C
+NTE,2020-04-26 10:00:00,-50.31,TOUT,temperatura fuera de -15 a 50 °C
+NTE,2020-04-26 11:00:00,-50.39,TOUT,temperatura fuera de -15 a 50 °C
+NTE,2020-04-26 12:00:00,-50.45,TOUT,temperatura fuera de -15 a 50 °C
+NTE,2020-04-26 13:00:00,-50.56,TOUT,temperatura fuera de -15 a 50 °C
+NTE,2020-04-26 14:00:00,-50.63,TOUT,temperatura fuera de -15 a 50 °C
+NTE,2020-04-26 15:00:00,-50.61,TOUT,temperatura fuera de -15 a 50 °C
+NTE,2020-04-26 16:00:00,-50.6,TOUT,temperatura fuera de -15 a 50 °C
+NTE,2020-04-26 17:00:00,-50.6,TOUT,temperatura fuera de -15 a 50 °C
+NTE,2020-04-26 20:00:00,-50.52,TOUT,temperatura fuera de -15 a 50 °C
+NTE,2020-04-26 21:00:00,-50.5,TOUT,temperatura fuera de -15 a 50 °C
+NTE,2020-04-26 22:00:00,-50.5,TOUT,temperatura fuera de -15 a 50 °C
+NTE,2020-04-27 01:00:00,-50.47,TOUT,temperatura fuera de -15 a 50 °C
+NTE,2020-04-27 02:00:00,-50.4,TOUT,temperatura fuera de -15 a 50 °C
+NTE,2020-04-27 03:00:00,-50.39,TOUT,temperatura fuera de -15 a 50 °C
+NTE,2020-04-27 04:00:00,-50.35,TOUT,temperatura fuera de -15 a 50 °C
+NTE,2020-04-27 05:00:00,-50.3,TOUT,temperatura fuera de -15 a 50 °C
+NTE,2020-04-27 06:00:00,-50.3,TOUT,temperatura fuera de -15 a 50 °C
+NTE,2020-04-27 07:00:00,-50.32,TOUT,temperatura fuera de -15 a 50 °C
+NTE,2020-04-27 08:00:00,-50.35,TOUT,temperatura fuera de -15 a 50 °C
+NTE,2020-04-27 09:00:00,-50.39,TOUT,temperatura fuera de -15 a 50 °C
+NTE,2020-04-27 10:00:00,-50.4,TOUT,temperatura fuera de -15 a 50 °C
+NTE,2020-04-27 11:00:00,-50.47,TOUT,temperatura fuera de -15 a 50 °C
+NTE,2020-04-27 12:00:00,-50.56,TOUT,temperatura fuera de -15 a 50 °C
+NTE,2020-04-27 13:00:00,-50.66,TOUT,temperatura fuera de -15 a 50 °C
+NTE,2020-04-27 14:00:00,-50.84,TOUT,temperatura fuera de -15 a 50 °C
+NTE,2020-04-27 15:00:00,-51.18,TOUT,temperatura fuera de -15 a 50 °C
+NTE,2020-04-27 16:00:00,-51.57,TOUT,temperatura fuera de -15 a 50 °C
+NTE,2020-04-27 17:00:00,-51.58,TOUT,temperatura fuera de -15 a 50 °C
+NTE,2020-04-27 18:00:00,-51.2,TOUT,temperatura fuera de -15 a 50 °C
+NTE,2020-04-27 19:00:00,-50.91,TOUT,temperatura fuera de -15 a 50 °C
+NTE,2020-04-27 20:00:00,-50.7,TOUT,temperatura fuera de -15 a 50 °C
+NTE,2020-04-27 21:00:00,-50.56,TOUT,temperatura fuera de -15 a 50 °C
+NTE,2020-04-27 22:00:00,-50.43,TOUT,temperatura fuera de -15 a 50 °C
+NTE,2020-04-27 23:00:00,-50.38,TOUT,temperatura fuera de -15 a 50 °C
+NTE,2020-04-28 00:00:00,-50.33,TOUT,temperatura fuera de -15 a 50 °C
+NTE,2020-04-28 01:00:00,-50.3,TOUT,temperatura fuera de -15 a 50 °C
+NTE,2020-04-28 02:00:00,-50.3,TOUT,temperatura fuera de -15 a 50 °C
+NTE,2020-04-28 05:00:00,-50.29,TOUT,temperatura fuera de -15 a 50 °C
+NTE,2020-04-28 06:00:00,-50.23,TOUT,temperatura fuera de -15 a 50 °C
+NTE,2020-04-28 07:00:00,-50.2,TOUT,temperatura fuera de -15 a 50 °C
+NTE,2020-04-28 08:00:00,-50.26,TOUT,temperatura fuera de -15 a 50 °C
+NTE,2020-04-28 09:00:00,-50.39,TOUT,temperatura fuera de -15 a 50 °C
+NTE,2020-04-28 10:00:00,-50.7,TOUT,temperatura fuera de -15 a 50 °C
+NTE,2020-04-28 11:00:00,-51.11,TOUT,temperatura fuera de -15 a 50 °C
+NTE,2020-04-28 12:00:00,-51.61,TOUT,temperatura fuera de -15 a 50 °C
+NTE,2020-04-28 13:00:00,-51.96,TOUT,temperatura fuera de -15 a 50 °C
+NTE,2020-04-28 14:00:00,-52.29,TOUT,temperatura fuera de -15 a 50 °C
+NTE,2020-04-28 15:00:00,-52.38,TOUT,temperatura fuera de -15 a 50 °C
+NTE,2020-04-28 16:00:00,-51.95,TOUT,temperatura fuera de -15 a 50 °C
+NTE,2020-04-28 17:00:00,-51.56,TOUT,temperatura fuera de -15 a 50 °C
+NTE,2020-04-28 18:00:00,-51.15,TOUT,temperatura fuera de -15 a 50 °C
+NTE,2020-04-28 19:00:00,-50.63,TOUT,temperatura fuera de -15 a 50 °C
+NTE,2020-04-28 20:00:00,-50.37,TOUT,temperatura fuera de -15 a 50 °C
+NTE,2020-04-28 21:00:00,-50.23,TOUT,temperatura fuera de -15 a 50 °C
+NTE,2020-04-28 22:00:00,-50.11,TOUT,temperatura fuera de -15 a 50 °C
+NTE,2020-04-28 23:00:00,-50.09,TOUT,temperatura fuera de -15 a 50 °C
+NTE,2020-04-29 00:00:00,-50.03,TOUT,temperatura fuera de -15 a 50 °C
+NTE,2020-04-29 01:00:00,-50.0,TOUT,temperatura fuera de -15 a 50 °C
+NTE,2020-04-30 01:00:00,-50.0,TOUT,temperatura fuera de -15 a 50 °C
+NE2,2024-06-15 22:00:00,84.47,TOUT,temperatura fuera de -15 a 50 °C
+SE,2020-11-10 19:00:00,64.0,SR,radiación solar mayor de 2 kW/m2
+NE3,2021-10-27 16:00:00,501.0,SR,radiación solar mayor de 2 kW/m2
+NE2,2022-12-28 15:00:00,2.076,SR,radiación solar mayor de 2 kW/m2
+NE2,2022-12-28 16:00:00,2.663,SR,radiación solar mayor de 2 kW/m2
+SO,2022-08-08 14:00:00,7.655,SR,radiación solar mayor de 2 kW/m2
+SO,2022-08-08 15:00:00,5.351,SR,radiación solar mayor de 2 kW/m2
+SO,2022-08-09 18:00:00,3.119,SR,radiación solar mayor de 2 kW/m2
+SO,2022-08-09 19:00:00,3.832,SR,radiación solar mayor de 2 kW/m2
+SO,2022-08-09 20:00:00,3.539,SR,radiación solar mayor de 2 kW/m2
+SO,2022-08-09 21:00:00,3.5,SR,radiación solar mayor de 2 kW/m2
+SO,2022-08-09 22:00:00,2.279,SR,radiación solar mayor de 2 kW/m2
+SO,2022-08-10 00:00:00,3.883,SR,radiación solar mayor de 2 kW/m2
+SO,2022-08-10 01:00:00,3.2,SR,radiación solar mayor de 2 kW/m2
+SO,2022-08-10 03:00:00,5.464,SR,radiación solar mayor de 2 kW/m2
+SO,2022-08-11 01:00:00,7.099,SR,radiación solar mayor de 2 kW/m2
+SO,2022-08-11 02:00:00,4.748,SR,radiación solar mayor de 2 kW/m2
+SO,2023-08-27 09:00:00,4.73,SR,radiación solar mayor de 2 kW/m2
+SO,2023-08-27 10:00:00,3.051,SR,radiación solar mayor de 2 kW/m2
+SO,2023-09-15 12:00:00,3.296,SR,radiación solar mayor de 2 kW/m2
+SO,2023-10-10 20:00:00,4.721,SR,radiación solar mayor de 2 kW/m2
+SO,2023-10-10 21:00:00,2.572,SR,radiación solar mayor de 2 kW/m2
+SO,2023-10-16 03:00:00,2.184,SR,radiación solar mayor de 2 kW/m2
+SO,2023-10-16 04:00:00,2.123,SR,radiación solar mayor de 2 kW/m2
+SO,2023-10-16 05:00:00,2.266,SR,radiación solar mayor de 2 kW/m2
+SO,2023-10-16 06:00:00,2.506,SR,radiación solar mayor de 2 kW/m2
+SO,2023-10-16 07:00:00,2.768,SR,radiación solar mayor de 2 kW/m2
+SO,2023-10-16 08:00:00,3.797,SR,radiación solar mayor de 2 kW/m2
+SO,2023-10-16 09:00:00,5.993,SR,radiación solar mayor de 2 kW/m2
+SO,2023-10-16 10:00:00,7.63,SR,radiación solar mayor de 2 kW/m2
+SO,2023-10-16 11:00:00,6.68,SR,radiación solar mayor de 2 kW/m2
+SO,2023-10-16 12:00:00,2.521,SR,radiación solar mayor de 2 kW/m2
+SO,2023-10-16 14:00:00,3.649,SR,radiación solar mayor de 2 kW/m2
+SO,2023-10-16 15:00:00,4.218,SR,radiación solar mayor de 2 kW/m2
+SO,2023-10-16 16:00:00,4.709,SR,radiación solar mayor de 2 kW/m2
+SO,2023-10-16 17:00:00,7.555,SR,radiación solar mayor de 2 kW/m2
+SO,2023-10-16 18:00:00,7.786,SR,radiación solar mayor de 2 kW/m2
+SO,2023-10-16 19:00:00,7.779,SR,radiación solar mayor de 2 kW/m2
+SO,2023-10-16 20:00:00,7.781,SR,radiación solar mayor de 2 kW/m2
+SO,2023-10-16 21:00:00,7.779,SR,radiación solar mayor de 2 kW/m2
+SO,2023-10-16 22:00:00,7.781,SR,radiación solar mayor de 2 kW/m2
+SO,2023-10-16 23:00:00,7.784,SR,radiación solar mayor de 2 kW/m2
+SO,2023-10-17 00:00:00,7.785,SR,radiación solar mayor de 2 kW/m2
+SO,2023-10-17 01:00:00,7.784,SR,radiación solar mayor de 2 kW/m2
+SO,2023-10-17 02:00:00,7.777,SR,radiación solar mayor de 2 kW/m2
+SO,2023-10-17 03:00:00,7.776,SR,radiación solar mayor de 2 kW/m2
+SO,2023-10-17 04:00:00,7.771,SR,radiación solar mayor de 2 kW/m2
+SO,2023-10-17 05:00:00,7.763,SR,radiación solar mayor de 2 kW/m2
+SO,2023-10-17 06:00:00,7.692,SR,radiación solar mayor de 2 kW/m2
+SO,2023-10-17 07:00:00,7.657,SR,radiación solar mayor de 2 kW/m2
+SO,2023-10-17 08:00:00,7.221,SR,radiación solar mayor de 2 kW/m2
+SO,2023-10-17 09:00:00,7.005,SR,radiación solar mayor de 2 kW/m2
+SO,2023-10-17 10:00:00,7.456,SR,radiación solar mayor de 2 kW/m2
+SO,2023-10-17 11:00:00,7.507,SR,radiación solar mayor de 2 kW/m2
+SO,2023-10-17 12:00:00,7.465,SR,radiación solar mayor de 2 kW/m2
+SO,2023-10-17 13:00:00,3.078,SR,radiación solar mayor de 2 kW/m2
+SO,2023-10-18 13:00:00,3.017,SR,radiación solar mayor de 2 kW/m2
+SO,2023-10-18 14:00:00,3.813,SR,radiación solar mayor de 2 kW/m2
+SO,2023-10-19 09:00:00,2.179,SR,radiación solar mayor de 2 kW/m2
+SO,2023-10-19 10:00:00,6.333,SR,radiación solar mayor de 2 kW/m2
+SO,2023-10-19 11:00:00,6.107,SR,radiación solar mayor de 2 kW/m2
+SO,2023-10-19 12:00:00,3.743,SR,radiación solar mayor de 2 kW/m2
+SO,2023-10-19 13:00:00,3.87,SR,radiación solar mayor de 2 kW/m2
+SO,2023-10-19 15:00:00,2.835,SR,radiación solar mayor de 2 kW/m2
+SO,2023-10-19 17:00:00,3.585,SR,radiación solar mayor de 2 kW/m2
+SO,2023-10-19 18:00:00,3.988,SR,radiación solar mayor de 2 kW/m2
+SO,2023-10-20 13:00:00,2.476,SR,radiación solar mayor de 2 kW/m2
+SO,2023-10-21 09:00:00,2.518,SR,radiación solar mayor de 2 kW/m2
+SO,2023-10-21 10:00:00,5.126,SR,radiación solar mayor de 2 kW/m2
+SO,2023-10-21 11:00:00,6.304,SR,radiación solar mayor de 2 kW/m2
+SO,2023-10-21 12:00:00,4.408,SR,radiación solar mayor de 2 kW/m2
+SO,2023-10-22 00:00:00,2.959,SR,radiación solar mayor de 2 kW/m2
+SO,2023-10-22 01:00:00,3.507,SR,radiación solar mayor de 2 kW/m2
+SO,2023-10-22 02:00:00,3.063,SR,radiación solar mayor de 2 kW/m2
+SO,2023-10-22 03:00:00,2.712,SR,radiación solar mayor de 2 kW/m2
+SO,2023-10-22 04:00:00,2.565,SR,radiación solar mayor de 2 kW/m2
+SO,2023-10-22 05:00:00,2.315,SR,radiación solar mayor de 2 kW/m2
+SO,2023-10-22 06:00:00,2.401,SR,radiación solar mayor de 2 kW/m2
+SO,2023-10-22 07:00:00,2.378,SR,radiación solar mayor de 2 kW/m2
+SO,2023-10-24 11:00:00,2.069,SR,radiación solar mayor de 2 kW/m2
+SO,2023-10-24 12:00:00,2.715,SR,radiación solar mayor de 2 kW/m2
+SO,2023-10-24 13:00:00,2.772,SR,radiación solar mayor de 2 kW/m2
+SO,2023-11-10 06:00:00,2.563,SR,radiación solar mayor de 2 kW/m2
+SO,2024-05-02 10:00:00,2.051,SR,radiación solar mayor de 2 kW/m2
+SO,2024-08-02 17:00:00,2.464,SR,radiación solar mayor de 2 kW/m2
+SO,2024-08-02 18:00:00,5.07,SR,radiación solar mayor de 2 kW/m2
+SO,2024-08-02 19:00:00,4.116,SR,radiación solar mayor de 2 kW/m2
+SO,2024-08-02 20:00:00,5.385,SR,radiación solar mayor de 2 kW/m2
+SO,2024-08-02 21:00:00,6.117,SR,radiación solar mayor de 2 kW/m2
+SO,2024-08-02 22:00:00,5.534,SR,radiación solar mayor de 2 kW/m2
+SO,2024-08-02 23:00:00,5.251,SR,radiación solar mayor de 2 kW/m2
+SO,2024-08-03 00:00:00,6.473,SR,radiación solar mayor de 2 kW/m2
+SO,2024-08-03 01:00:00,6.459,SR,radiación solar mayor de 2 kW/m2
+SO,2024-08-03 02:00:00,5.703,SR,radiación solar mayor de 2 kW/m2
+SO,2024-08-03 03:00:00,6.83,SR,radiación solar mayor de 2 kW/m2
+SO,2024-08-03 04:00:00,7.197,SR,radiación solar mayor de 2 kW/m2
+SO,2024-08-03 05:00:00,7.651,SR,radiación solar mayor de 2 kW/m2
+SO,2024-08-03 06:00:00,7.647,SR,radiación solar mayor de 2 kW/m2
+SO,2024-08-03 07:00:00,7.397,SR,radiación solar mayor de 2 kW/m2
+SO,2024-08-03 08:00:00,4.982,SR,radiación solar mayor de 2 kW/m2
+SO,2024-08-03 09:00:00,3.686,SR,radiación solar mayor de 2 kW/m2
+SO,2024-08-03 10:00:00,4.234,SR,radiación solar mayor de 2 kW/m2
+SO,2024-08-03 11:00:00,4.447,SR,radiación solar mayor de 2 kW/m2
+SO,2024-08-03 12:00:00,4.416,SR,radiación solar mayor de 2 kW/m2
+SO,2024-08-03 13:00:00,4.443,SR,radiación solar mayor de 2 kW/m2
+SO,2024-08-03 14:00:00,4.703,SR,radiación solar mayor de 2 kW/m2
+SO,2024-08-03 15:00:00,3.862,SR,radiación solar mayor de 2 kW/m2
+SO,2024-08-03 16:00:00,4.188,SR,radiación solar mayor de 2 kW/m2
+SO,2024-08-03 17:00:00,4.275,SR,radiación solar mayor de 2 kW/m2
+SO,2024-08-03 18:00:00,3.873,SR,radiación solar mayor de 2 kW/m2
+SO,2024-08-03 19:00:00,3.734,SR,radiación solar mayor de 2 kW/m2
+SO,2024-08-03 20:00:00,4.484,SR,radiación solar mayor de 2 kW/m2
+SO,2024-08-03 21:00:00,4.206,SR,radiación solar mayor de 2 kW/m2
+SO,2024-08-03 22:00:00,4.58,SR,radiación solar mayor de 2 kW/m2
+SO,2024-08-03 23:00:00,6.029,SR,radiación solar mayor de 2 kW/m2
+SO,2024-08-04 00:00:00,6.095,SR,radiación solar mayor de 2 kW/m2
+SO,2024-08-04 01:00:00,5.853,SR,radiación solar mayor de 2 kW/m2
+SO,2024-08-04 02:00:00,5.721,SR,radiación solar mayor de 2 kW/m2
+SO,2024-08-04 03:00:00,6.517,SR,radiación solar mayor de 2 kW/m2
+SO,2024-08-04 04:00:00,7.647,SR,radiación solar mayor de 2 kW/m2
+SO,2024-08-04 05:00:00,7.667,SR,radiación solar mayor de 2 kW/m2
+SO,2024-08-04 06:00:00,7.657,SR,radiación solar mayor de 2 kW/m2
+SO,2024-08-04 07:00:00,7.411,SR,radiación solar mayor de 2 kW/m2
+SO,2024-08-04 08:00:00,5.116,SR,radiación solar mayor de 2 kW/m2
+SO,2024-08-04 09:00:00,4.468,SR,radiación solar mayor de 2 kW/m2
+SO,2024-08-04 10:00:00,4.478,SR,radiación solar mayor de 2 kW/m2
+SO,2024-08-04 11:00:00,4.63,SR,radiación solar mayor de 2 kW/m2
+SO,2024-08-04 12:00:00,4.736,SR,radiación solar mayor de 2 kW/m2
+SO,2024-08-04 13:00:00,4.812,SR,radiación solar mayor de 2 kW/m2
+SO,2024-08-04 14:00:00,3.755,SR,radiación solar mayor de 2 kW/m2
+SO,2024-08-04 15:00:00,3.422,SR,radiación solar mayor de 2 kW/m2
+SO,2024-08-04 16:00:00,2.913,SR,radiación solar mayor de 2 kW/m2
+SO,2024-08-04 17:00:00,3.727,SR,radiación solar mayor de 2 kW/m2
+SO,2024-08-04 18:00:00,3.67,SR,radiación solar mayor de 2 kW/m2
+SO,2024-08-04 19:00:00,2.876,SR,radiación solar mayor de 2 kW/m2
+SO,2024-08-04 22:00:00,6.62,SR,radiación solar mayor de 2 kW/m2
+SO,2024-08-04 23:00:00,6.793,SR,radiación solar mayor de 2 kW/m2
+SO,2024-08-05 19:00:00,5.662,SR,radiación solar mayor de 2 kW/m2
+SO,2024-08-05 20:00:00,6.218,SR,radiación solar mayor de 2 kW/m2
+SO,2024-08-05 21:00:00,6.208,SR,radiación solar mayor de 2 kW/m2
+SO,2024-08-05 22:00:00,3.122,SR,radiación solar mayor de 2 kW/m2
+SO,2024-08-05 23:00:00,5.416,SR,radiación solar mayor de 2 kW/m2
+NE3,2025-10-22 15:00:00,604.0,SR,radiación solar mayor de 2 kW/m2
+NO2,2025-09-08 18:00:00,2.4,SR,radiación solar mayor de 2 kW/m2
+NO2,2025-09-08 19:00:00,2.633,SR,radiación solar mayor de 2 kW/m2
+NO2,2025-09-08 20:00:00,2.796,SR,radiación solar mayor de 2 kW/m2
+NO2,2025-09-08 21:00:00,2.944,SR,radiación solar mayor de 2 kW/m2
+NO2,2025-09-08 22:00:00,3.119,SR,radiación solar mayor de 2 kW/m2
+NO2,2025-09-08 23:00:00,2.642,SR,radiación solar mayor de 2 kW/m2
+NO2,2025-09-09 05:00:00,2.053,SR,radiación solar mayor de 2 kW/m2
+NO2,2025-09-09 06:00:00,2.558,SR,radiación solar mayor de 2 kW/m2
+NO2,2025-09-09 07:00:00,2.503,SR,radiación solar mayor de 2 kW/m2
+NO2,2025-09-09 08:00:00,3.147,SR,radiación solar mayor de 2 kW/m2
+NO2,2025-09-09 09:00:00,3.363,SR,radiación solar mayor de 2 kW/m2
+NO2,2025-09-09 10:00:00,2.705,SR,radiación solar mayor de 2 kW/m2
+NE2,2021-12-20 07:00:00,166.3,WSR,viento mayor de 150 km/h
+NE2,2021-12-20 08:00:00,168.4,WSR,viento mayor de 150 km/h
+SO2,2021-06-24 03:00:00,176.6,WSR,viento mayor de 150 km/h
+SO2,2021-06-24 04:00:00,158.6,WSR,viento mayor de 150 km/h
+SO2,2021-07-07 01:00:00,160.9,WSR,viento mayor de 150 km/h
+SO2,2021-07-07 03:00:00,152.7,WSR,viento mayor de 150 km/h
+SO2,2021-07-07 21:00:00,152.7,WSR,viento mayor de 150 km/h
+SO2,2021-07-10 23:00:00,152.1,WSR,viento mayor de 150 km/h
+SO2,2021-07-11 01:00:00,158.4,WSR,viento mayor de 150 km/h
+SO2,2021-07-11 02:00:00,154.9,WSR,viento mayor de 150 km/h
+SO2,2021-07-11 03:00:00,161.4,WSR,viento mayor de 150 km/h
+SO2,2021-07-11 05:00:00,153.9,WSR,viento mayor de 150 km/h
+SO2,2021-07-11 06:00:00,162.0,WSR,viento mayor de 150 km/h
+SO2,2021-07-11 07:00:00,154.1,WSR,viento mayor de 150 km/h
+SO2,2021-08-03 22:00:00,153.2,WSR,viento mayor de 150 km/h
+SO2,2021-08-03 23:00:00,174.9,WSR,viento mayor de 150 km/h
+SO2,2021-08-04 00:00:00,172.0,WSR,viento mayor de 150 km/h
+SO2,2021-08-04 02:00:00,152.6,WSR,viento mayor de 150 km/h
+SO2,2021-08-04 03:00:00,157.0,WSR,viento mayor de 150 km/h
+SO2,2021-08-04 04:00:00,159.4,WSR,viento mayor de 150 km/h
+SO2,2021-08-04 05:00:00,157.7,WSR,viento mayor de 150 km/h
+SO2,2021-08-04 06:00:00,160.4,WSR,viento mayor de 150 km/h
+SO2,2021-08-05 22:00:00,156.2,WSR,viento mayor de 150 km/h
+SO2,2021-08-05 23:00:00,164.7,WSR,viento mayor de 150 km/h
+SO2,2021-08-06 05:00:00,151.8,WSR,viento mayor de 150 km/h
+SO2,2021-08-06 06:00:00,169.6,WSR,viento mayor de 150 km/h
+SO2,2021-08-06 07:00:00,178.9,WSR,viento mayor de 150 km/h
+SO2,2021-08-06 08:00:00,186.9,WSR,viento mayor de 150 km/h
+SO2,2021-08-06 09:00:00,189.4,WSR,viento mayor de 150 km/h
+SO2,2021-08-06 10:00:00,168.4,WSR,viento mayor de 150 km/h
+SO2,2021-08-07 06:00:00,155.6,WSR,viento mayor de 150 km/h
+SO2,2021-08-07 07:00:00,159.4,WSR,viento mayor de 150 km/h
+SO2,2021-08-07 08:00:00,162.7,WSR,viento mayor de 150 km/h
+SO2,2021-09-13 05:00:00,192.3,WSR,viento mayor de 150 km/h
+SO2,2021-09-13 06:00:00,190.0,WSR,viento mayor de 150 km/h
+SO2,2021-09-13 07:00:00,178.8,WSR,viento mayor de 150 km/h
+SO2,2021-10-01 20:00:00,193.8,WSR,viento mayor de 150 km/h
+SO2,2021-10-01 23:00:00,169.9,WSR,viento mayor de 150 km/h
+SO2,2021-10-02 00:00:00,202.5,WSR,viento mayor de 150 km/h
+SO2,2021-10-02 01:00:00,210.9,WSR,viento mayor de 150 km/h
+SO2,2021-10-02 02:00:00,216.4,WSR,viento mayor de 150 km/h
+SO2,2021-10-02 03:00:00,213.0,WSR,viento mayor de 150 km/h
+SO2,2021-10-02 04:00:00,218.2,WSR,viento mayor de 150 km/h
+SO2,2021-10-02 05:00:00,217.2,WSR,viento mayor de 150 km/h
+SO2,2021-10-02 06:00:00,215.7,WSR,viento mayor de 150 km/h
+SO2,2021-10-02 07:00:00,227.1,WSR,viento mayor de 150 km/h
+SO2,2021-10-02 08:00:00,201.3,WSR,viento mayor de 150 km/h
+SO2,2021-10-02 09:00:00,166.1,WSR,viento mayor de 150 km/h
+SO2,2021-10-05 02:00:00,152.3,WSR,viento mayor de 150 km/h
+SO2,2021-10-05 03:00:00,161.9,WSR,viento mayor de 150 km/h
+SO2,2021-10-05 04:00:00,178.8,WSR,viento mayor de 150 km/h
+SO2,2021-10-05 05:00:00,181.2,WSR,viento mayor de 150 km/h
+SO2,2021-10-05 06:00:00,165.0,WSR,viento mayor de 150 km/h
+SO2,2021-10-05 07:00:00,156.9,WSR,viento mayor de 150 km/h
+SO2,2021-10-05 08:00:00,151.9,WSR,viento mayor de 150 km/h
+NO3,2022-12-22 05:00:00,188.8,WSR,viento mayor de 150 km/h
+NO3,2022-12-22 06:00:00,182.5,WSR,viento mayor de 150 km/h
+NO3,2022-12-22 07:00:00,179.7,WSR,viento mayor de 150 km/h
+NO3,2023-02-20 05:00:00,151.9,WSR,viento mayor de 150 km/h
+NO3,2023-04-08 08:00:00,170.5,WSR,viento mayor de 150 km/h
+NO3,2023-04-10 07:00:00,150.9,WSR,viento mayor de 150 km/h
+NO3,2023-04-10 08:00:00,159.3,WSR,viento mayor de 150 km/h
+NO3,2023-04-10 10:00:00,161.2,WSR,viento mayor de 150 km/h
+NO3,2023-04-10 11:00:00,152.1,WSR,viento mayor de 150 km/h
+NO3,2023-04-10 15:00:00,160.6,WSR,viento mayor de 150 km/h
+NO3,2023-04-10 16:00:00,163.9,WSR,viento mayor de 150 km/h
+NO3,2023-04-10 17:00:00,185.9,WSR,viento mayor de 150 km/h
+NO3,2023-04-10 18:00:00,193.5,WSR,viento mayor de 150 km/h
+NO3,2023-04-10 19:00:00,195.5,WSR,viento mayor de 150 km/h
+NO3,2023-04-10 20:00:00,197.4,WSR,viento mayor de 150 km/h
+NO3,2023-04-10 21:00:00,192.9,WSR,viento mayor de 150 km/h
+NO3,2023-04-10 22:00:00,197.0,WSR,viento mayor de 150 km/h
+NO3,2023-04-10 23:00:00,190.6,WSR,viento mayor de 150 km/h
+NO3,2023-04-11 00:00:00,182.0,WSR,viento mayor de 150 km/h
+NO3,2023-04-11 01:00:00,165.6,WSR,viento mayor de 150 km/h
+NO3,2023-04-11 02:00:00,171.3,WSR,viento mayor de 150 km/h
+NO3,2023-04-11 03:00:00,188.8,WSR,viento mayor de 150 km/h
+NO3,2023-04-11 04:00:00,205.4,WSR,viento mayor de 150 km/h
+NO3,2023-04-11 05:00:00,190.7,WSR,viento mayor de 150 km/h
+NO3,2023-04-11 06:00:00,190.2,WSR,viento mayor de 150 km/h
+NO3,2023-04-11 07:00:00,215.9,WSR,viento mayor de 150 km/h
+NO3,2023-04-11 08:00:00,212.7,WSR,viento mayor de 150 km/h
+NO3,2023-04-14 03:00:00,180.9,WSR,viento mayor de 150 km/h
+NO3,2023-04-14 04:00:00,200.7,WSR,viento mayor de 150 km/h
+NO3,2023-04-14 05:00:00,213.5,WSR,viento mayor de 150 km/h
+NO3,2023-04-14 06:00:00,198.5,WSR,viento mayor de 150 km/h
+NO3,2023-04-14 07:00:00,207.5,WSR,viento mayor de 150 km/h
+NO3,2023-04-18 00:00:00,153.7,WSR,viento mayor de 150 km/h
+NO3,2023-04-18 01:00:00,150.7,WSR,viento mayor de 150 km/h
+NO3,2023-04-18 02:00:00,151.6,WSR,viento mayor de 150 km/h
+NO3,2023-04-18 03:00:00,158.4,WSR,viento mayor de 150 km/h
+NO3,2023-04-18 04:00:00,153.4,WSR,viento mayor de 150 km/h
+NO3,2023-04-18 05:00:00,172.1,WSR,viento mayor de 150 km/h
+NO3,2023-04-18 06:00:00,195.9,WSR,viento mayor de 150 km/h
+NO3,2023-04-18 07:00:00,182.2,WSR,viento mayor de 150 km/h
+NO3,2023-04-18 08:00:00,185.1,WSR,viento mayor de 150 km/h
+NE3,2025-03-01 00:00:00,337.0,WSR,viento mayor de 150 km/h
+SE2,2021-05-31 09:00:00,258.0,RAINF,lluvia mayor de 100 mm en una hora
+SE2,2021-05-31 10:00:00,360.0,RAINF,lluvia mayor de 100 mm en una hora
+SE2,2021-05-31 11:00:00,360.0,RAINF,lluvia mayor de 100 mm en una hora
+SE2,2021-05-31 12:00:00,360.0,RAINF,lluvia mayor de 100 mm en una hora
+SE2,2021-05-31 13:00:00,309.0,RAINF,lluvia mayor de 100 mm en una hora
+NTE,2025-03-26 12:00:00,145.7,RAINF,lluvia mayor de 100 mm en una hora
+NTE,2025-11-28 18:00:00,195.9,RAINF,lluvia mayor de 100 mm en una hora
+NTE,2025-11-28 19:00:00,360.0,RAINF,lluvia mayor de 100 mm en una hora
+NTE,2025-11-28 20:00:00,360.0,RAINF,lluvia mayor de 100 mm en una hora
+NTE,2025-11-28 21:00:00,360.0,RAINF,lluvia mayor de 100 mm en una hora
+NTE,2025-11-28 22:00:00,360.0,RAINF,lluvia mayor de 100 mm en una hora
+NTE,2025-11-28 23:00:00,360.0,RAINF,lluvia mayor de 100 mm en una hora
+NTE,2025-11-29 00:00:00,360.0,RAINF,lluvia mayor de 100 mm en una hora
+NTE,2025-11-29 01:00:00,360.0,RAINF,lluvia mayor de 100 mm en una hora
+NTE,2025-11-29 02:00:00,360.0,RAINF,lluvia mayor de 100 mm en una hora
+NTE,2025-11-29 03:00:00,360.0,RAINF,lluvia mayor de 100 mm en una hora
+NTE,2025-11-29 04:00:00,360.0,RAINF,lluvia mayor de 100 mm en una hora
+NTE,2025-11-29 05:00:00,360.0,RAINF,lluvia mayor de 100 mm en una hora
+NTE,2025-11-29 06:00:00,360.0,RAINF,lluvia mayor de 100 mm en una hora
+NTE,2025-11-29 07:00:00,360.0,RAINF,lluvia mayor de 100 mm en una hora
+NTE,2025-11-29 08:00:00,360.0,RAINF,lluvia mayor de 100 mm en una hora
+NTE,2025-11-29 09:00:00,360.0,RAINF,lluvia mayor de 100 mm en una hora
+NTE,2025-11-29 10:00:00,360.0,RAINF,lluvia mayor de 100 mm en una hora
+NTE,2025-11-29 11:00:00,360.0,RAINF,lluvia mayor de 100 mm en una hora
+NTE,2025-11-29 12:00:00,360.0,RAINF,lluvia mayor de 100 mm en una hora
+NTE,2025-11-29 13:00:00,217.1,RAINF,lluvia mayor de 100 mm en una hora
+NTE,2026-04-10 11:00:00,338.1,RAINF,lluvia mayor de 100 mm en una hora
+NE3,2025-09-29 10:00:00,578.0,PRS,presión menor de 650 mmHg
+NTE,2022-12-18 05:00:00,1001.0,PM10,valor de saturación 999 o más
+NE,2023-04-30 06:00:00,1000.0,PM10,valor de saturación 999 o más
+NE,2023-04-30 07:00:00,1000.0,PM10,valor de saturación 999 o más
+SO2,2023-02-12 06:00:00,999.0,PM10,valor de saturación 999 o más
+SO2,2024-03-30 05:00:00,999.0,PM10,valor de saturación 999 o más
+NE,2024-01-01 00:00:00,999.0,PM2.5,valor de saturación 999 o más

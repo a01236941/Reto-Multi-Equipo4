@@ -1,0 +1,26 @@
+metodo,horas_bloque,MAE_z
+SAITS,1,0.16823429
+SAITS,3,0.20353334
+SAITS,6,0.26901793
+SAITS,12,0.37586606
+SAITS,24,0.41485292
+Interpolación lineal,1,0.15700181
+Interpolación lineal,3,0.23412085
+Interpolación lineal,6,0.31343666
+Interpolación lineal,12,0.4745089
+Interpolación lineal,24,0.58442014
+Último valor observado,1,0.23727737
+Último valor observado,3,0.3536401
+Último valor observado,6,0.46645504
+Último valor observado,12,0.62084633
+Último valor observado,24,0.63898367
+Media,1,0.7584301
+Media,3,0.74166566
+Media,6,0.727396
+Media,12,0.78392303
+Media,24,0.7630568
+Mediana,1,0.72900945
+Mediana,3,0.7171717
+Mediana,6,0.70383286
+Mediana,12,0.7619366
+Mediana,24,0.738346

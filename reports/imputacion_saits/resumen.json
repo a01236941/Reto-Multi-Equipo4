@@ -1,0 +1,37 @@
+{
+  "semilla": 20260930,
+  "horas_ventana": 48,
+  "hueco_maximo_imputado_h": 24,
+  "epocas_max": 20,
+  "ventanas": [
+    25389,
+    2669,
+    1575
+  ],
+  "rasgos": [
+    "CO",
+    "NO",
+    "NO2",
+    "NOX",
+    "O3",
+    "PM10",
+    "PM2.5",
+    "PRS",
+    "RAINF",
+    "RH",
+    "SO2",
+    "SR",
+    "TOUT",
+    "WSR",
+    "WDR_sin",
+    "WDR_cos",
+    "hora_sin",
+    "hora_cos",
+    "mes_sin",
+    "mes_cos"
+  ],
+  "filas_salida": 831095,
+  "filas_agregadas": 187,
+  "celdas_imputadas": 323691,
+  "faltantes_totales": 1404007
+}

@@ -1,0 +1,5 @@
+concepto,filas,porcentaje
+filas_base_imputada,831095,100.0
+eliminadas_sin_O3_medido,113385,13.64
+eliminadas_falta_predictora,172293,20.73
+filas_base_final,545417,65.63
