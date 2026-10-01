@@ -6,3 +6,11 @@ renv/staging/
 output/
 
 /.quarto/
+
+# Caches y archivos temporales; los originales y la base preparada sí se versionan.
+*.tmp
+*.log
+~$*
+
+# Copia consolidada local; en Git se comparten los siete archivos por año.
+data/processed/sima_horario.csv.gz

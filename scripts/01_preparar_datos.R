@@ -1,0 +1,16 @@
+# Ejecutar desde la raíz del proyecto, después de renv::restore().
+if (.Platform$OS.type=="windows") invisible(Sys.setlocale("LC_CTYPE", ".UTF-8"))
+source("R/01_importar.R",encoding="UTF-8")
+source("R/02_preparar.R",encoding="UTF-8")
+source("R/03_exportar.R",encoding="UTF-8")
+source("R/04_imputar.R",encoding="UTF-8")
+dir.create("output/cache",recursive=TRUE,showWarnings=FALSE)
+dir.create("data/processed",recursive=TRUE,showWarnings=FALSE)
+entrada <- importar_sima()
+limpios <- preparar_sima(entrada)
+limpios <- imputar_sima(limpios)
+# RDS conserva tipos; los CSV anuales se comparten en GitHub.
+saveRDS(limpios,"output/cache/sima_preparado.rds")
+exportar_sima(limpios)
+writeLines(trimws(capture.output(sessionInfo()),which="right"),"reports/auditoria/sessionInfo.txt")
+message("Terminado: ",nrow(limpios)," filas en siete CSV anuales y una copia consolidada local.")
