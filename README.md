@@ -10,6 +10,8 @@ Preparación de los datos horarios de SIMA (enero 2020 a julio 2026, 15 estacion
 | `data/imputada/` | Base imputada con SAITS. Cada variable tiene una columna `_imp` (1 = valor imputado, 0 = medido) |
 | `data/final/` | **Base para modelar O3**: 545 417 filas con O3 medido, predictoras completas y dummies de estación y temporada |
 
+**Unidades:** O3, NO, NO2, NOX y SO2 en ppb; CO en ppm; PM10 y PM2.5 en µg/m³; TOUT en °C; RH en %; SR en kW/m²; PRS en mmHg; WSR en km/h; WDR en grados. Los umbrales de la NOM están en ppm: 0.070 ppm equivalen a 70 ppb.
+
 Todos los archivos son CSV comprimidos (`.csv.gz`) divididos por año o semestre. Se leen sin descomprimir:
 
 ```r
@@ -33,5 +35,3 @@ Para repetir la imputación: `pip install -r python/requirements.txt` y después
 La imputación anterior en R (`R/04_imputar.R`, columnas `*_preparado` de `data/processed`) se conserva como primera versión; la que se usa en el informe es la de SAITS.
 
 El diccionario de variables y los criterios de limpieza están en `reports/criterios_y_diccionario.md`.
-
-**Unidades:** O3, NO, NO2, NOX y SO2 en ppb; CO en ppm; PM10 y PM2.5 en µg/m³; TOUT en °C; RH en %; SR en kW/m²; PRS en mmHg; RAINF en mm; WSR en km/h; WDR en grados. Los umbrales de la NOM están en ppm: 0.070 ppm equivalen a 70 ppb.
