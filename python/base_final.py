@@ -1,7 +1,7 @@
 """Base final para modelar O3.
 Entrada: data/imputada/sima_imputada_AAAA_sN.csv.gz (salida de imputar_saits.py)
-Salida:  data/final/sima_modelo_o3_AAAA_sN.csv.gz y reports/imputacion_saits/base_final_resumen.csv
-Ejecutar desde la raíz del proyecto:  python python/base_final.py
+Salida:  data/final/sima_modelo_o3.csv (base limpia en un solo CSV) y reports/imputacion_saits/base_final_resumen.csv
+Excluye 2020. Ejecutar desde la raíz del proyecto:  python python/base_final.py
 """
 import glob, os
 import numpy as np
@@ -21,8 +21,13 @@ calma = d.WSR == 0
 d["WDR_sin"] = np.where(calma, 0.0, np.sin(np.deg2rad(d.WDR)))
 d["WDR_cos"] = np.where(calma, 0.0, np.cos(np.deg2rad(d.WDR)))
 
-predictoras = ["TOUT", "RH", "SR", "RAINF", "PRS", "WSR", "NO", "NO2", "NOX", "CO",
+# NOX no se incluye: es prácticamente NO + NO2 (r = 0.998) y genera colinealidad.
+predictoras = ["TOUT", "RH", "SR", "RAINF", "PRS", "WSR", "NO", "NO2", "CO",
                "WDR_sin", "WDR_cos", "hora_sin", "hora_cos", "mes_sin", "mes_cos"]
+
+# 2020 se excluye: falta el ozono en la mayor parte de sus horas y la pandemia alteró el tráfico.
+es_2020 = d.anio == 2020
+n_2020 = int(es_2020.sum()); d = d[~es_2020]
 
 # La respuesta es O3 medido, nunca imputado.
 sin_o3 = d.O3.isna() | (d.O3_imp == 1)
@@ -40,9 +45,9 @@ final = pd.concat([d[cols], dum], axis=1)
 for c in predictoras:
     final[c] = final[c].round(4)
 
-res = pd.DataFrame({"concepto": ["filas_base_imputada", "eliminadas_sin_O3_medido",
+res = pd.DataFrame({"concepto": ["filas_base_imputada", "eliminadas_anio_2020", "eliminadas_sin_O3_medido",
                                  "eliminadas_falta_predictora", "filas_base_final"],
-                    "filas": [n_total, n_sin_o3, n_incompleta, len(final)]})
+                    "filas": [n_total, n_2020, n_sin_o3, n_incompleta, len(final)]})
 res["porcentaje"] = (100 * res.filas / n_total).round(2)
 os.makedirs("reports/imputacion_saits", exist_ok=True)
 res.to_csv("reports/imputacion_saits/base_final_resumen.csv", index=False)
@@ -50,10 +55,7 @@ print(res)
 
 os.makedirs("data/final", exist_ok=True)
 final["fecha_hora"] = final.fecha_hora.dt.strftime("%Y-%m-%d %H:%M:%S")
-# Un archivo por semestre.
-sem = final["anio"].astype(str) + "_s" + np.where(final["mes"] <= 6, "1", "2")
-for a, g in final.groupby(sem):
-    ruta = f"data/final/sima_modelo_o3_{a}.csv.gz"
-    g.to_csv(ruta, index=False)
-    print(ruta, len(g), "filas", round(os.path.getsize(ruta)/2**20, 1), "MB")
+final = final.sort_values(["estacion", "fecha_hora"]).reset_index(drop=True)
+final.to_csv("data/final/sima_modelo_o3.csv", index=False, encoding="utf-8")
+print("data/final/sima_modelo_o3.csv:", len(final), "filas")
 print("Columnas:", final.shape[1])
