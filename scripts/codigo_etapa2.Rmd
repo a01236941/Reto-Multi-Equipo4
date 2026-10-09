@@ -1,0 +1,453 @@
+---
+title: "Etapa 2"
+author: "Nahomi Paz Ramírez"
+date: "2026-10-07"
+output: word_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+# Variables y Exploración descriptiva
+```{r}
+df = read.csv("C:/Users/jpaz7/Downloads/sima_modelo_o3_csv (3)/sima_modelo_o3.csv")
+summary(df)
+print("\nDimensiones de la base de datos limpios")
+dim(df)
+names(df)
+```
+Variables categóricas:todo lo referente a estación
+```{r}
+I <- names(df)[names(df) != "fecha_hora"]
+
+categoricas <- c()
+
+for (i in I) {
+  
+  minimo <- min(df[[i]], na.rm = TRUE)
+  maximo <- max(df[[i]], na.rm = TRUE)
+  
+  if (minimo == 0 && maximo == 1) {
+    categoricas <- c(categoricas, i)
+  }
+}
+
+categoricas
+```
+```{r}
+cuantitativas <- c(
+  "anio", "mes", "hora", "O3", "TOUT", "RH", "SR",
+  "RAINF", "PRS", "WSR", "NO", "NO2", "CO",
+  "WDR_sin", "WDR_cos", "hora_sin", "hora_cos",
+  "mes_sin", "mes_cos"
+)
+
+estadisticos <- data.frame(
+  Variable = cuantitativas,
+  Media = NA,
+  Mediana = NA,
+  Desv_Estandar = NA,
+  Minimo = NA,
+  Q1 = NA,
+  Q3 = NA,
+  Maximo = NA,
+  Rango = NA
+)
+
+for (i in seq_along(cuantitativas)) {
+  
+  x <- df[[cuantitativas[i]]]
+  
+  estadisticos$Media[i] <- mean(x, na.rm = TRUE)
+  estadisticos$Mediana[i] <- median(x, na.rm = TRUE)
+  estadisticos$Desv_Estandar[i] <- sd(x, na.rm = TRUE)
+  estadisticos$Minimo[i] <- min(x, na.rm = TRUE)
+  estadisticos$Q1[i] <- quantile(x, 0.25, na.rm = TRUE)
+  estadisticos$Q3[i] <- quantile(x, 0.75, na.rm = TRUE)
+  estadisticos$Maximo[i] <- max(x, na.rm = TRUE)
+  estadisticos$Rango[i] <- max(x, na.rm = TRUE) - min(x, na.rm = TRUE)
+}
+
+estadisticos
+```
+
+```{r}
+categoricas <- c("estacion", "temporada")
+
+for (i in seq_along(categoricas)) {
+  
+  x <- df[[categoricas[i]]]
+  
+  tabla <- table(x)
+  
+  frecuencias <- data.frame(
+    Variable = categoricas[i],
+    Categoria = names(tabla),
+    Frecuencia = as.vector(tabla),
+    Porcentaje = round(as.vector(tabla) / sum(tabla) * 100, 2)
+  )
+  
+  if (i == 1) {
+    resultados_categoricas <- frecuencias
+  } else {
+    resultados_categoricas <- rbind(
+      resultados_categoricas,
+      frecuencias
+    )
+  }
+}
+resultados_categoricas
+```
+
+
+```{r}
+png(
+  "C:/Users/jpaz7/OneDrive/Escritorio/Data Science/Multivariados/frecuencia_estacion.png",
+  width = 1600,
+  height = 1000,
+  res = 150
+)
+par(mar = c(8, 6, 4, 2))
+
+barplot(
+  table(df$estacion),
+  main = "Frecuencia por estación",
+  xlab = "Estación",
+  ylab = "Frecuencia",
+  las=2
+)
+
+```
+```{r}
+table(df$estacion)
+```
+
+
+```{r}
+png(
+  "C:/Users/jpaz7/OneDrive/Escritorio/Data Science/Multivariados/frecuencia_estacion.png",
+  width = 1600,
+  height = 1000,
+  res = 150
+)
+
+par(mar = c(10, 15, 4, 2))
+
+barplot(
+  table(df$estacion),
+  main = "Frecuencia por estación",
+  xlab = "Estación",
+  ylab = "Frecuencia",
+  las = 2,
+  cex.names = 0.9,
+  mgp = c(3.5, 5, 0)
+)
+
+dev.off()
+```
+
+```{r}
+png(
+  "C:/Users/jpaz7/OneDrive/Escritorio/Data Science/Multivariados/frecuencia_temporada.png",
+  width = 1600,
+  height = 1000,
+  res = 150
+)
+
+par(mar = c(10, 15, 4, 2))
+
+barplot(
+  table(df$temporada),
+  main = "Frecuencia por temporada",
+  xlab = "Temporada",
+  ylab = "Frecuencia", 
+  las = 2,
+  cex.names = 0.9,
+  mgp = c(3.5, 5, 0)
+)
+```
+
+```{r}
+correlaciones <- data.frame(
+  Variable = cuantitativas,
+  Correlacion_O3 = NA
+)
+
+for (i in seq_along(cuantitativas)) {
+  
+  x <- df[[cuantitativas[i]]]
+  
+  correlaciones$Correlacion_O3[i] <- cor(
+    df$O3,
+    x,
+    use = "complete.obs"
+  )
+}
+
+correlaciones$Correlacion_O3 <- round(
+  correlaciones$Correlacion_O3,
+  3
+)
+
+correlaciones
+library(ggplot2)
+png(
+  "C:/Users/jpaz7/OneDrive/Escritorio/Data Science/Multivariados/correlacion_O3.png",
+  width = 1600,
+  height = 1000,
+  res = 150
+)
+
+ggplot(
+  correlaciones,
+  aes(
+    x = "O3",
+    y = Variable,
+    fill = Correlacion_O3
+  )
+) +
+  geom_tile(color = "white") +
+  geom_text(
+    aes(label = Correlacion_O3),
+    color = "black"
+  ) +
+  scale_fill_gradient2(
+    low = "blue",
+    mid = "white",
+    high = "red",
+    midpoint = 0,
+    limits = c(-1, 1)
+  ) +
+  labs(
+    title = "Heatmap de correlación con O3",
+    x = NULL,
+    y = NULL,
+    fill = "Correlación"
+  ) +
+  theme_minimal() +
+  theme(
+    axis.text.x = element_text(size = 11),
+    axis.text.y = element_text(size = 10)
+  )
+```
+```{r}
+matriz_cor <- cor(
+  df[cuantitativas],
+  use = "complete.obs"
+)
+
+matriz_cor <- round(matriz_cor, 3)
+matriz_cor
+library(ggplot2)
+png(
+  "C:/Users/jpaz7/OneDrive/Escritorio/Data Science/Multivariados/heatmap_general.png",
+  width = 1600,
+  height = 1000,
+  res = 150
+)
+cor_largo <- as.data.frame(as.table(matriz_cor))
+
+colnames(cor_largo) <- c(
+  "Variable1",
+  "Variable2",
+  "Correlacion"
+)
+ggplot(
+  cor_largo,
+  aes(
+    x = Variable1,
+    y = Variable2,
+    fill = Correlacion
+  )
+) +
+  geom_tile(color = "white", linewidth = 0.5) +
+  scale_fill_gradient2(
+    low = "#2196F3",
+    mid = "white",
+    high = "#F44336",
+    midpoint = 0,
+    limits = c(-1, 1)
+  ) +
+  labs(
+    title = "Heatmap de correlaciones",
+    x = NULL,
+    y = NULL,
+    fill = "Correlación"
+  ) +
+  theme_minimal() +
+  theme(
+    axis.text.x = element_text(
+      angle = 45,
+      hjust = 1,
+      size = 9
+    ),
+    axis.text.y = element_text(size = 9),
+    panel.grid = element_blank()
+  )
+```
+
+# Exploración descriptiva orientada al objetivo de indagación
+acerca de la variable objetivo
+```{r}
+summary(df$O3)
+
+sd(df$O3, na.rm = TRUE)
+quantile(df$O3, probs = c(.01, .25, .50, .75, .99), na.rm = TRUE)
+library(dplyr)
+
+df %>%
+  group_by(estacion) %>%
+  summarise(
+    n = sum(!is.na(O3)),
+    media = mean(O3, na.rm = TRUE),
+    mediana = median(O3, na.rm = TRUE),
+    sd = sd(O3, na.rm = TRUE),
+    Q1 = quantile(O3, .25, na.rm = TRUE),
+    Q3 = quantile(O3, .75, na.rm = TRUE),
+    max = max(O3, na.rm = TRUE)
+  )
+library(ggplot2)
+
+png(
+  "C:/Users/jpaz7/OneDrive/Escritorio/Data Science/Multivariados/O3xestacion.png",
+  width = 1600,
+  height = 1000,
+  res = 150
+)
+
+ggplot(df, aes(x = estacion, y = O3)) +
+  geom_boxplot() +
+  labs(
+    title = "Distribución de la concentración de O3 por estación",
+    x = "Estación",
+    y = "O3"
+  ) +
+  theme_minimal()
+```
+```{r}
+png(
+  "C:/Users/jpaz7/OneDrive/Escritorio/Data Science/Multivariados/O3xestacionxhora.png",
+  width = 1600,
+  height = 1000,
+  res = 150
+)
+
+ggplot(df, aes(x = hora, y = O3)) +
+  stat_summary(
+    fun = median,
+    geom = "line"
+  ) +
+  labs(
+    title = "Comportamiento horario de la concentración de O3",
+    x = "Hora del día",
+    y = "Mediana de O3"
+  ) +
+  theme_minimal()
+
+ggplot(df, aes(x = hora, y = O3, group = estacion)) +
+  stat_summary(
+    fun = median,
+    geom = "line"
+  ) +
+  facet_wrap(~estacion) +
+  labs(
+    title = "Perfil horario de O3 por estación",
+    x = "Hora",
+    y = "Mediana de O3"
+  ) +
+  theme_minimal()
+```
+
+
+```{r}
+df$fecha_hora <- as.POSIXct(df$fecha_hora, tz = "UTC")
+sum(is.na(df$fecha_hora))   # debe dar 0; si no, agrega format = "%d/%m/%Y %H:%M" (o el que uses)
+
+acf_estacion <- function(d, lag.max = 72) {
+  d <- d[order(d$fecha_hora), ]
+  d <- d[!duplicated(d$fecha_hora), ]
+  # rejilla horaria completa: los huecos quedan como NA y no se "comprimen"
+  grilla <- data.frame(
+    fecha_hora = seq(min(d$fecha_hora), max(d$fecha_hora), by = "hour")
+  )
+  d <- merge(grilla, d[, c("fecha_hora", "O3")], by = "fecha_hora", all.x = TRUE)
+  a <- acf(d$O3, lag.max = lag.max, na.action = na.pass, plot = FALSE)
+  list(acf = as.vector(a$acf), pct_na = mean(is.na(d$O3)) * 100)
+}
+```
+
+
+```{r}
+estaciones <- sort(unique(as.character(df$estacion)))
+acfs <- lapply(estaciones, function(e) acf_estacion(df[df$estacion == e, ]))
+names(acfs) <- estaciones
+
+res <- data.frame(
+  Estacion     = estaciones,
+  lag1         = sapply(acfs, function(r) r$acf[2]),
+  lag12        = sapply(acfs, function(r) r$acf[13]),
+  lag24        = sapply(acfs, function(r) r$acf[25]),
+  lag48        = sapply(acfs, function(r) r$acf[49]),
+  pct_sin_dato = sapply(acfs, function(r) r$pct_na)
+)
+rownames(res) <- NULL
+res[, -1] <- round(res[, -1], 3)
+res
+
+
+```
+
+```{r}
+dir_fig <- "C:/Users/jpaz7/OneDrive/Escritorio/Data Science/Multivariados/"
+lim <- c(min(sapply(acfs, function(r) min(r$acf))), 1)
+
+png(paste0(dir_fig, "ACF_O3_estacion.png"), width = 1600, height = 1000, res = 150)
+par(mfrow = c(4, 4), mar = c(3, 3, 2, 1))
+for (e in estaciones) {
+  plot(0:72, acfs[[e]]$acf, type = "h", ylim = lim,
+       main = e, xlab = "", ylab = "")
+  abline(h = 0)
+  abline(v = c(24, 48, 72), col = "red", lty = 2)
+}
+invisible(dev.off())
+
+knitr::include_graphics(paste0(dir_fig, "ACF_O3_estacion.png"))
+```
+
+```{r}
+df_lag <- do.call(rbind, lapply(split(df, df$estacion), function(d) {
+  d <- d[order(d$fecha_hora), ]
+  d <- d[!duplicated(d$fecha_hora), ]
+  grilla <- data.frame(
+    fecha_hora = seq(min(d$fecha_hora), max(d$fecha_hora), by = "hour")
+  )
+  d <- merge(grilla, d[, c("fecha_hora", cuantitativas)],
+             by = "fecha_hora", all.x = TRUE)
+  d$O3_t24 <- c(d$O3[-(1:24)], rep(NA, 24))   # O3 24 horas después
+  d
+}))
+
+corr_t24 <- data.frame(
+  Variable = cuantitativas,
+  Mismo_t  = correlaciones$Correlacion_O3,
+  t_mas_24 = sapply(cuantitativas, function(v)
+    round(cor(df_lag$O3_t24, df_lag[[v]], use = "complete.obs"), 3))
+)
+rownames(corr_t24) <- NULL
+corr_t24
+
+p <- corr_t24[corr_t24$Variable != "O3", ]
+
+png(paste0(dir_fig, "correlacion_O3_t24.png"), width = 1600, height = 1000, res = 150)
+par(mar = c(8, 5, 4, 2))
+barplot(t(as.matrix(p[, c("Mismo_t", "t_mas_24")])),
+        beside = TRUE, names.arg = p$Variable, las = 2,
+        legend.text = c("O3(t)", "O3(t+24)"),
+        args.legend = list(x = "topright"),
+        main = "Correlación con O3: misma hora vs 24 h después",
+        ylab = "Correlación")
+invisible(dev.off())
+
+knitr::include_graphics(paste0(dir_fig, "correlacion_O3_t24.png"))
+```
+
