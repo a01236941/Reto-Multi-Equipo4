@@ -30,7 +30,7 @@ Las carpetas `processed` e `imputada` están en CSV comprimidos (`.csv.gz`) divi
 1. **Limpieza (R):** `scripts/01_preparar_datos.R` une los Excel, revisa duplicados, reconstruye fechas y pasa a NA las lecturas imposibles. Auditoría en `reports/auditoria/`.
 2. **Imputación (Python):** `python/imputar_saits.py` aplica reglas físicas adicionales y entrena SAITS, la parte Transformer del método Transformer-Diffusion de Gómez Santos et al. (2027). Entrena con 2020–2024, valida con 2025 y prueba con 2026. Solo imputa huecos de hasta 24 horas y no usa media ni mediana. Resultados en `reports/imputacion_saits/`.
 3. **Base final (Python):** `python/base_final.py` excluye 2020 y la variable NOX, quita las filas sin O3 medido o con predictoras vacías, crea las dummies y guarda `data/final/sima_modelo_o3.csv`. 2020 se excluye porque le falta el ozono en la mayor parte de sus horas; NOX, porque equivale prácticamente a NO + NO2. 2020 sí se usó para entrenar la imputación.
-4. **Exploración descriptiva (R):** `scripts/05_exploracion_etapa2.Rmd` lee `data/final/sima_modelo_o3.csv` y genera las tablas y gráficas del reporte de la Etapa 2 en `reports/figuras_etapa2/`.
+4. **Exploración descriptiva (R):** `scripts/codigo_etapa2.Rmd` lee `data/final/sima_modelo_o3.csv` y genera las tablas y gráficas del reporte de la Etapa 2.
 
 Para repetir la imputación: `pip install -r python/requirements.txt` y después `python python/imputar_saits.py` y `python python/base_final.py` desde la raíz del proyecto.
 
