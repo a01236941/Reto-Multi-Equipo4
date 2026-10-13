@@ -1,5 +1,5 @@
 # Reto SIMA · Equipo 4
-Preparación de los datos horarios de SIMA (enero 2021 a julio 2026, 15 estaciones) para **predecir la concentración de ozono (O3)** a partir de meteorología, precursores y variables de calendario. Modelo de regresión evaluado con R2 y MSE, bajo validación temporal en dos pasos. Metodología CRISP-DM, MA2003B.
+Preparación de los datos horarios de SIMA (enero 2021 a julio 2026, 13 estaciones) para **predecir la concentración de ozono (O3)** a partir de meteorología, precursores y variables de calendario. Modelo de regresión evaluado con R2 y MSE, bajo validación temporal en dos pasos. Metodología CRISP-DM, MA2003B.
 
 ## Qué base usar
 
@@ -8,7 +8,7 @@ Preparación de los datos horarios de SIMA (enero 2021 a julio 2026, 15 estacion
 | `data/raw/` | Los siete Excel originales de SIMA, sin tocar |
 | `data/processed/` | Base limpia: 830 908 filas, mediciones con las correcciones documentadas |
 | `data/imputada/` | Base imputada con SAITS. Cada variable tiene una columna `_imp` (1 = valor imputado, 0 = medido) |
-| `data/final/sima_modelo_o3.csv` | **Base limpia para modelar O3**: 522 208 filas y 40 columnas (enero 2021 a julio 2026) con O3 medido, predictoras completas y dummies de estación y temporada. Se excluyen 2020 y NOX |
+| `data/final/sima_modelo_o3.csv` | **Base limpia para modelar O3**: 488 029 filas y 38 columnas (enero 2021 a julio 2026) con O3 medido, predictoras completas y dummies de estación y temporada. Se excluyen 2020 y NOX |
 
 **Unidades:** O3, NO, NO2 y SO2 en ppb; CO en ppm; PM10 y PM2.5 en µg/m³; TOUT en °C; RH en %; SR en kW/m²; RAINF en mm/hr; PRS en mmHg; WSR en km/h; WDR en grados. Los umbrales de la NOM están en ppm: 0.070 ppm equivalen a 70 ppb.
 
