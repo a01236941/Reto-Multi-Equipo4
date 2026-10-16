@@ -9,10 +9,8 @@ knitr::opts_chunk$set(echo = TRUE, warning = FALSE, message = FALSE)
 knitr::opts_knit$set(root.dir = "~/Documents/TEC/Semestre 5/Multivariados/2003B_Blank")
 ```
 
-
-
-```{r}
-df <- read.csv("C:/Users/jpaz7/Downloads/sima_modelo_o3.csv")
+```{r carga}
+df <- read.csv("data/final/sima_modelo_o3.csv")
 df <- df[!df$estacion %in% c("NTE", "NO3"), ] 
 df$fecha_hora <- as.POSIXct(df$fecha_hora, tz = "UTC")
 cat("Filas:", nrow(df), " Estaciones:", length(unique(df$estacion)))
@@ -27,7 +25,7 @@ df$O3[df$O3 <= 0] <- NA
 
 
 
-```{r }
+```{r base-modelo}
 lead24 <- function(x) c(x[-(1:24)], rep(NA, 24))
 lagk   <- function(x, k) c(rep(NA, k), x[seq_len(length(x) - k)])
 
@@ -52,14 +50,15 @@ construir <- function(d) {
 mod_df <- do.call(rbind, lapply(split(df, df$estacion), construir))
 rownames(mod_df) <- NULL
 mod_df$estacion <- factor(mod_df$estacion)
-invisible(gc())   
+invisible(gc())   # se conserva df: lo usan las revisiones de NO más abajo
 ```
 
 
 
-```{r}
+```{r funciones}
 ang_de <- function(s, c) (atan2(s, c) * 180 / pi) %% 360
 
+# El ángulo de rotación por estación se estima con el entrenamiento.
 
 centro_viento <- function(ang, y, ancho = 10, min_n = 100) {
   # ang en grados [0, 360); y = log(O3) del conjunto de entrenamiento
@@ -114,6 +113,7 @@ metricas <- function(real, pred)
 
 ```
 
+# 3. Ajuste y evaluación en dos pasos
 
 ```{r}
 ajustar_D <- function(anios_train, anio_test) {
@@ -144,7 +144,7 @@ ajustar_D <- function(anios_train, anio_test) {
 }
 ```
 
-# Resultados 
+# Resultados finales
 
 ```{r}
 # Entrenamiento 2021-2024, prueba 2025
@@ -196,7 +196,7 @@ print(round(comp, 3))
 ## Desempeño por estación y consistencia entre estaciones
 
 
-```{r}
+```{r por-estacion}
 library(dplyr)
 
 # Validación 2025: año completo
@@ -253,7 +253,7 @@ print(round(tab_global, 3))
 
 
 
-```{r}
+```{r calibracion}
 calib <- function(p) {
   g <- cut(p$pred, c(-Inf, 20, 30, 40, 50, 60, Inf),
            labels = c("<20", "20-30", "30-40", "40-50", "50-60", ">60"))
@@ -484,7 +484,6 @@ library(car)
 v <- car::vif(mD)
 print(round(v, 2))
 
-
 d1 <- drop1(mD, test = "F")
 imp <- data.frame(termino     = rownames(d1),
                   gl          = d1$Df,
@@ -492,13 +491,18 @@ imp <- data.frame(termino     = rownames(d1),
                   F           = round(d1$`F value`, 1))
 imp[-1, ][order(-imp$aumento_SCR[-1]), ]
 
+
+top <- imp[-1, ][order(-imp$aumento_SCR[-1]), ][1:8, ]
+cat(sprintf("%s & %d & %s & %.1f \\\\\n",
+            top$termino, top$gl,
+            format(top$aumento_SCR, big.mark = ","), top$F), sep = "")
+
 rm(mD, tr, s); invisible(gc())
 ```
 
 
 
-
-```{r}
+```{r km-datos}
 library(dplyr)
 
 vars_km <- c("TOUT", "RH", "SR", "WSR", "PRS", "WDR_sin", "WDR_cos", "NO", "NO2", "CO")
@@ -540,6 +544,9 @@ print(round(rbind(autovalor = pca$sdev^2, var_acumulada = cumsum(ve)), 3))
 npc <- 6   # ~83 % de la varianza acumulada
 cat("\nCargas de los primeros componentes:\n")
 print(round(pca$rotation[, 1:4], 2))
+
+cg <- round(pca$rotation[, 1:2], 2)
+cat(sprintf("%s & %.2f & %.2f \\\\\n", rownames(cg), cg[, 1], cg[, 2]), sep = "")
 
 plot(pca$sdev^2, type = "b", pch = 16, xlab = "Componente", ylab = "Autovalor",
      main = "Gráfico de sedimentación"); abline(h = 1, lty = 3)
@@ -688,9 +695,3 @@ print(round(rbind(original = r_val$metricas, sin_altos = r_sens$metricas), 3))
 print(summary(r_val$modelo)$coefficients["NO", ])
 print(summary(r_sens$modelo)$coefficients["NO", ])
 ```
-```{r}
-library(car)
-v <- car::vif(mD)
-print(round(v, 2))
-```
-
