@@ -10,7 +10,7 @@ knitr::opts_chunk$set(echo = TRUE)
 ```
 # Variables y Exploración descriptiva
 ```{r}
-df = read.csv("C:/Users/jpaz7/Downloads/sima_modelo_o3_csv (3)/sima_modelo_o3.csv")
+df = read.csv("data/final/sima_modelo_o3.csv.gz")
 summary(df)
 print("\nDimensiones de la base de datos limpios")
 dim(df)
@@ -102,7 +102,7 @@ resultados_categoricas
 
 ```{r}
 png(
-  "C:/Users/jpaz7/OneDrive/Escritorio/Data Science/Multivariados/frecuencia_estacion.png",
+  "output/frecuencia_estacion.png",
   width = 1600,
   height = 1000,
   res = 150
@@ -125,7 +125,7 @@ table(df$estacion)
 
 ```{r}
 png(
-  "C:/Users/jpaz7/OneDrive/Escritorio/Data Science/Multivariados/frecuencia_estacion.png",
+  "output/frecuencia_estacion.png",
   width = 1600,
   height = 1000,
   res = 150
@@ -148,7 +148,7 @@ dev.off()
 
 ```{r}
 png(
-  "C:/Users/jpaz7/OneDrive/Escritorio/Data Science/Multivariados/frecuencia_temporada.png",
+  "output/frecuencia_temporada.png",
   width = 1600,
   height = 1000,
   res = 150
@@ -192,7 +192,7 @@ correlaciones$Correlacion_O3 <- round(
 correlaciones
 library(ggplot2)
 png(
-  "C:/Users/jpaz7/OneDrive/Escritorio/Data Science/Multivariados/correlacion_O3.png",
+  "output/correlacion_O3.png",
   width = 1600,
   height = 1000,
   res = 150
@@ -240,7 +240,7 @@ matriz_cor <- round(matriz_cor, 3)
 matriz_cor
 library(ggplot2)
 png(
-  "C:/Users/jpaz7/OneDrive/Escritorio/Data Science/Multivariados/heatmap_general.png",
+  "output/heatmap_general.png",
   width = 1600,
   height = 1000,
   res = 150
@@ -309,7 +309,7 @@ df %>%
 library(ggplot2)
 
 png(
-  "C:/Users/jpaz7/OneDrive/Escritorio/Data Science/Multivariados/O3xestacion.png",
+  "output/O3xestacion.png",
   width = 1600,
   height = 1000,
   res = 150
@@ -326,7 +326,7 @@ ggplot(df, aes(x = estacion, y = O3)) +
 ```
 ```{r}
 png(
-  "C:/Users/jpaz7/OneDrive/Escritorio/Data Science/Multivariados/O3xestacionxhora.png",
+  "output/O3xestacionxhora.png",
   width = 1600,
   height = 1000,
   res = 150
@@ -398,7 +398,7 @@ res
 ```
 
 ```{r}
-dir_fig <- "C:/Users/jpaz7/OneDrive/Escritorio/Data Science/Multivariados/"
+dir_fig <- "output/"
 lim <- c(min(sapply(acfs, function(r) min(r$acf))), 1)
 
 png(paste0(dir_fig, "ACF_O3_estacion.png"), width = 1600, height = 1000, res = 150)
