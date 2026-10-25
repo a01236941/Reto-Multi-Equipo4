@@ -31,29 +31,29 @@ base = pd.read_csv("data/final/sima_modelo_o3.csv.gz")
 |---|---|
 | `data/` | Datos originales (`raw/`) y base para modelar (`final/`) |
 | `R/` | Funciones del flujo de limpieza en R: importación, preparación y exportación (`01_importar.R` a `03_exportar.R`) y la primera versión de la imputación (`04_imputar.R`) |
-| `scripts/` | Limpieza, base para modelar y análisis por etapa (`01_preparar_datos.R`, `03_leer_base_preparada.R`, `04_base_para_modelar.R`, `codigo_etapa2.Rmd`, `reto_etapa3.Rmd`, `reto_etapa4.rmd`) |
+| `scripts/` | Limpieza (`01_preparar_datos.R`), lectura y vista compacta de la base preparada en R (`03_leer_base_preparada.R`, `04_base_para_modelar.R`) y análisis por etapa (`codigo_etapa2.Rmd`, `reto_etapa3.Rmd`, `reto_etapa4.rmd`) |
 | `python/` | Imputación con SAITS y construcción de la base final |
 | `reports/` | Auditoría de la limpieza, resultados de la imputación y diccionario de variables |
-| `docs/` | Reportes de las etapas 2 y 3, reporte en Word y cuaderno de referencia |
-| `quarto/` | Fuente del reporte (`reporte.qmd`) |
+| `docs/` | Reportes de las etapas 2, 3 y 4, reporte en Word y cuaderno de referencia |
+| `quarto/` | Plantilla del reporte en Quarto con salida a Word (`reporte.qmd`); carga los Excel de 2024 y 2025 |
 
 ## Cómo se hizo
 
 1. **Limpieza (R):** `scripts/01_preparar_datos.R` usa las funciones de `R/` para unir los Excel, revisar duplicados, reconstruir fechas y pasar a NA las lecturas imposibles. Genera la base limpia por año en `data/processed/`. Auditoría en `reports/auditoria/`.
 2. **Imputación (Python):** `python/imputar_saits.py` lee la base limpia, aplica reglas físicas adicionales y entrena SAITS, la parte Transformer del método Transformer-Diffusion de Gómez Santos et al. (2027). Entrena con 2020–2024, valida con 2025 y prueba con 2026. Solo imputa huecos de hasta 24 horas y no usa media ni mediana. La imputación es retrospectiva: usa horas anteriores y posteriores al hueco. Escribe la base imputada en `data/imputada/` y los resultados en `reports/imputacion_saits/`.
-3. **Base final (Python):** `python/base_final.py` excluye 2020 y la variable NOX, quita las filas sin O3 medido o con predictoras vacías y crea las dummies. 2020 se excluye porque le falta el ozono en la mayor parte de sus horas (58.6 %); NOX, porque equivale prácticamente a NO + NO2. 2020 sí se usó para entrenar la imputación.
-4. **Exploración descriptiva, Etapa 2 (R):** `scripts/codigo_etapa2.Rmd` genera las tablas y gráficas del reporte de la Etapa 2.
-5. **Modelación, Etapa 3 (R):** `scripts/reto_etapa3.Rmd` ajusta la regresión lineal múltiple, el PCA y el k-means del reporte de la Etapa 3.
+3. **Base final (Python):** `python/base_final.ipynb` y `python/base_final.py` excluyen 2020 y la variable NOX, quitan las filas sin O3 medido o con predictoras vacías y las estaciones NTE y NO3, crean las dummies y exportan `sima_modelo_o3.csv`. Para subirla a GitHub se comprime con `gzip` (`data/final/sima_modelo_o3.csv.gz`). 2020 se excluye porque le falta el ozono en la mayor parte de sus horas (58.6 %); NOX, porque equivale prácticamente a NO + NO2. 2020 sí se usó para entrenar la imputación.
+4. **Exploración descriptiva, Etapa 2 (R):** `scripts/codigo_etapa2.Rmd` genera las tablas y gráficas del reporte de la Etapa 2. Usa la base de 13 estaciones; el reporte de la Etapa 2 se hizo con 15 estaciones (522 208 registros), por lo que algunas cifras pueden diferir.
+5. **Modelación, Etapa 3 (R):** `scripts/reto_etapa3.Rmd` ajusta la regresión lineal múltiple, el PCA (6 componentes) y el k-means del reporte de la Etapa 3, con el umbral de 70 ppb de esa etapa. Las cifras finales del informe están en `scripts/reto_etapa4.rmd`.
 6. **Análisis final, Etapa 4 (R):** `scripts/reto_etapa4.rmd` contiene el análisis del informe final:
    - Modelo D (regresión sobre ln(O3) a 24 h con meteorología, precursores, rezagos de 1 a 3 h de O3 y NO2, hora, mes y estación), modelo mínimo (O3 de hoy, hora, mes y estación) y persistencia, evaluados sobre las mismas filas.
    - Validación temporal: entrenamiento 2021–2024 con prueba en 2025, y entrenamiento 2021–2025 con prueba en enero–julio de 2026.
    - Umbrales por promedio horario: 58 ppb (principal, fin de la banda "buena" del Índice AIRE Y SALUD) y 90 ppb (límite horario de la NOM-020-SSA1-2021).
    - Matriz de confusión, episodios, comparación con igual número de alertas y bootstrap por bloques de 7 días.
-   - Diagnósticos de supuestos (autocorrelación, heterocedasticidad, VIF), PCA y k-means (k = 3) con el error por perfil.
+   - Diagnósticos de supuestos (autocorrelación, heterocedasticidad, VIF), PCA (5 componentes) y k-means (k = 3) con el error por perfil.
    - Sensibilidad a lecturas de NO fuera del rango de operación de SIMA y a la imputación.
    - Indicador de la NOM-020 por estación y año (2021–2025).
 
-La imputación anterior en R (`R/04_imputar.R`, columnas `*_preparado`) se conserva como primera versión; la que se usa en el informe es la de SAITS.
+La imputación anterior en R (`R/04_imputar.R`, columnas `*_preparado`) se conserva como primera versión; la que se usa en el informe es la de SAITS. Los scripts `scripts/03_leer_base_preparada.R` (une los siete archivos anuales de `data/processed/` en una sola tabla) y `scripts/04_base_para_modelar.R` (construye una vista compacta con las predictoras de esa primera imputación y sus marcas de imputación) pertenecen a esa primera versión: requieren haber corrido antes `scripts/01_preparar_datos.R` y no se usan en el informe final.
 
 ## Resultados principales (Etapa 4)
 
@@ -66,7 +66,7 @@ La imputación anterior en R (`R/04_imputar.R`, columnas `*_preparado`) se conse
 | Modelo mínimo | 2026 ene–jul | 0.575 | 12.89 |
 | Modelo D | 2026 ene–jul | 0.587 | 12.72 |
 
-El Modelo D reduce el error frente a la persistencia (MSE −24.4 % en 2025 y −19.9 % en 2026), pero no mejora de forma demostrable al modelo mínimo (diferencia en R2 de 0.004 y 0.012, con intervalos que incluyen cero). Con el umbral de alerta nominal, el modelo no detecta más horas excedidas que la persistencia, aunque emite menos falsas alarmas. 2026 solo cubre hasta julio.
+El Modelo D reduce el error frente a la persistencia (MSE −24.4 % en 2025 y −19.9 % en 2026), pero no mejora de forma demostrable al modelo mínimo (diferencia en R2 de 0.004 y 0.012, con intervalos que incluyen cero). Con el umbral de alerta nominal, el modelo no detecta más horas excedidas que la persistencia, aunque emite menos falsas alarmas. 2026 solo cubre hasta julio. El análisis completo, con la discusión, las limitaciones y las recomendaciones, está en `docs/etapa4/Etapa4_Equipo4.pdf`.
 
 ## Cómo reproducirlo
 
@@ -79,5 +79,5 @@ La imputación con SAITS tiene semilla fija, pero un nuevo entrenamiento puede d
 
 ## Documentación
 
-- Reportes de las etapas: `docs/etapa2/Etapa2_Equipo4.pdf` y `docs/etapa3/Etapa3_Equipo4.pdf`.
+- Reportes de las etapas: `docs/etapa2/Etapa2_Equipo4.pdf`, `docs/etapa3/Etapa3_Equipo4.pdf` y `docs/etapa4/Etapa4_Equipo4.pdf` (informe final).
 - Diccionario de variables y criterios de limpieza: `reports/criterios_y_diccionario.md`.
