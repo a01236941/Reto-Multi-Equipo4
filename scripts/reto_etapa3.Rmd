@@ -7,10 +7,12 @@ date: "2026-10-14"
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE, warning = FALSE, message = FALSE)
 knitr::opts_knit$set(root.dir = normalizePath(".."))
+library(lmtest)
+dir.create("output", showWarnings = FALSE)
 ```
 
 ```{r carga}
-df <- read.csv("data/final/sima_modelo_o3.csv.gz"")
+df <- read.csv("data/final/sima_modelo_o3.csv.gz")
 df <- df[!df$estacion %in% c("NTE", "NO3"), ] 
 df$fecha_hora <- as.POSIXct(df$fecha_hora, tz = "UTC")
 cat("Filas:", nrow(df), " Estaciones:", length(unique(df$estacion)))
