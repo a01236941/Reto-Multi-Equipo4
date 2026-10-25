@@ -1,0 +1,1014 @@
+---
+title: "Reto SIMA: pronóstico de ozono a 24 horas (Etapa 4)"
+output: html_document
+date: "2026-10-23"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, warning = FALSE, message = FALSE)
+library(lmtest)
+library(car)
+library(dplyr)
+library(cluster)
+
+RUTA_BASE    <- "data/final/sima_modelo_o3.csv"
+RUTA_MASCARA <- "data/final/sima_mascara_imputacion.csv.gz"
+```
+
+## Umbrales
+Antes se usaba 70 ppb, que en la NOM-172-SEMARNAT-2019 era un límite
+de 8 horas aplicado a datos horarios.
+
+Los umbrales se toman de normas vigentes y corresponden al promedio horario, 
+que es lo que pronostica el modelo:
+
+- **Principal, 58 ppb:** fin de la banda buena e inicio de aceptable del Índice 
+AIRE Y SALUD (NOM-172-SEMARNAT-2023, Tabla 6).
+- **Normativo, 90 ppb:** límite horario de la NOM-020-SSA1-2021 (Tabla 1) e 
+inicio de la banda mala de la NOM-172-SEMARNAT-2023. Lo superan pocas horas.
+
+```{r umbrales-def}
+U_PRINCIPAL <- 58
+U_NORMATIVO <- 90
+U_EV        <- U_PRINCIPAL   # define una "hora excedida"
+U_ALERTA    <- U_PRINCIPAL   # alerta cuando el pronóstico supera este valor
+```
+
+```{r}
+df <- read.csv(RUTA_BASE)
+df <- df[!df$estacion %in% c("NTE", "NO3"), ] 
+df$fecha_hora <- as.POSIXct(df$fecha_hora, tz = "UTC")
+cat("Filas:", nrow(df), " Estaciones:", length(unique(df$estacion)))
+cat("O3 <= 0:", sum(df$O3 <= 0))
+
+lim_o3 <- c(`2021` = 175, `2022` = 160, `2023` = 175, `2024` = 180, `2025` = 185)
+cat("Lecturas de O3 que exceden el rango de SIMA:",
+    sum(df$anio %in% names(lim_o3) & df$O3 > lim_o3[as.character(df$anio)]), "\n")
+
+df$O3[df$O3 <= 0] <- NA
+
+if (file.exists(RUTA_MASCARA)) {
+  mascara <- read.csv(RUTA_MASCARA)
+  mascara$fecha_hora <- as.POSIXct(mascara$fecha_hora, tz = "UTC")
+  df <- merge(df, mascara, by = c("estacion", "fecha_hora"), all.x = TRUE)
+}
+vars_flag  <- c("O3", "TOUT", "RH", "SR", "WSR", "PRS", "WDR", 
+                "WDR_sin", "WDR_cos", "NO", "NO2", "CO")
+hay_mascara <- any(paste0(vars_flag, "_imp") %in% names(df))
+cat("\nMáscara de imputación disponible:", hay_mascara, "\n")
+```
+
+```{r }
+lead24 <- function(x) c(x[-(1:24)], rep(NA, 24))
+lagk   <- function(x, k) c(rep(NA, k), x[seq_len(length(x) - k)])
+
+construir <- function(d) {
+  est <- as.character(d$estacion[1])
+  d <- d[order(d$fecha_hora), ]; d <- d[!duplicated(d$fecha_hora), ]
+  g <- data.frame(fecha_hora = seq(min(d$fecha_hora), max(d$fecha_hora), by = "hour"))
+  d <- merge(g, d, by = "fecha_hora", all.x = TRUE)
+  d$estacion <- est
+  d$O3_fut   <- lead24(d$O3)  # O3 en t+24
+  d$O3_ahora <- d$O3  # O3 en t (rezago diario del objetivo)
+  for (k in 1:3) {
+    d[[paste0("O3_l",  k)]] <- lagk(d$O3,  k)
+    d[[paste0("NO2_l", k)]] <- lagk(d$NO2, k)
+  }
+  # Banderas de imputación para el análisis de sensibilidad
+  if (hay_mascara) {
+    fl  <- function(v) { x <- d[[paste0(v, "_imp")]]; if (is.null(x)) rep(FALSE, nrow(d)) else (x %in% 1) }
+    lg  <- function(x, k) lagk(x, k) %in% TRUE
+    imp_t   <- Reduce(`|`, lapply(vars_flag, fl))
+    imp_lag <- Reduce(`|`, lapply(1:3, function(k) lg(fl("O3"), k) | lg(fl("NO2"), k)))
+    d$imp_pred <- imp_t | imp_lag
+    d$imp_obj  <- lead24(fl("O3")) %in% TRUE
+  } else {
+    d$imp_pred <- NA
+    d$imp_obj  <- NA
+  }
+  t_obj <- d$fecha_hora + 24 * 3600
+  d$hora_obj <- as.integer(format(t_obj, "%H", tz = "UTC"))
+  d$mes_obj  <- as.integer(format(t_obj, "%m", tz = "UTC"))
+  d$anio_obj <- as.integer(format(t_obj, "%Y", tz = "UTC"))
+  d
+}
+mod_df <- do.call(rbind, lapply(split(df, df$estacion), construir))
+rownames(mod_df) <- NULL
+mod_df$estacion <- factor(mod_df$estacion)
+invisible(gc())   
+```
+
+
+```{r}
+ang_de <- function(s, c) (atan2(s, c) * 180 / pi) %% 360
+
+centro_viento <- function(ang, y, ancho = 10, min_n = 100) {
+  b <- floor(ang / ancho) %% (360 / ancho)
+  m <- tapply(y, b, function(v) if (length(v) >= min_n) mean(v) else NA_real_)
+  m <- m[!is.na(m)]
+  if (length(m) == 0) stop("Ninguna caja tiene al menos min_n observaciones")
+  # Suavizado circular
+  ids <- as.integer(names(m))
+  n_bins <- 360 / ancho
+  suav <- sapply(ids, function(i) {
+    vecinos <- ((i + c(-1, 0, 1)) %% n_bins)
+    mean(m[as.character(vecinos)][!is.na(m[as.character(vecinos)])])
+  })
+  (ids[which.max(suav)] + 0.5) * ancho
+}
+
+transformar <- function(d, centros) {
+  g   <- function(v) d[[v]]
+  ang <- ang_de(g("WDR_sin"), g("WDR_cos"))
+  c0  <- centros[as.character(d$estacion)]
+  d$TEMP_t  <- log(g("TOUT") + 273.15)
+  d$WS_t    <- 1 / (g("WSR") + 1)
+  d$RH_x    <- g("RH")
+  d$SR_x    <- g("SR")
+  d$WD_dev  <- pmin(abs(ang - c0), 360 - abs(ang - c0))
+  d$lO3_fut   <- log(d$O3_fut)
+  d$lO3_ahora <- log(d$O3_ahora)
+  for (k in 1:3) d[[paste0("lO3_l", k)]] <- log(d[[paste0("O3_l", k)]])
+  d$hora_f <- factor(d$hora_obj, levels = 0:23)
+  d$mes_f  <- factor(d$mes_obj,  levels = 1:12)
+  d
+}
+
+
+f_D <- lO3_fut ~ lO3_ahora + TEMP_t + poly(RH_x, 3) + poly(SR_x, 2) + WS_t +
+  PRS + WD_dev + NO + NO2 + CO + hora_f + mes_f + estacion +
+  lO3_l1 + lO3_l2 + lO3_l3 + NO2_l1 + NO2_l2 + NO2_l3
+
+f_base <- lO3_fut ~ lO3_ahora + hora_f + mes_f + estacion
+
+vars_D <- c("O3_fut", "O3_ahora", "estacion", "anio_obj", "hora_obj", "mes_obj",
+            "TOUT", "RH", "SR", "WSR", "PRS", "WDR_sin", "WDR_cos", "NO", "NO2", "CO",
+            paste0("O3_l", 1:3), paste0("NO2_l", 1:3))
+
+metricas <- function(real, pred)
+  c(MAE = mean(abs(real - pred)),
+    RMSE = sqrt(mean((real - pred)^2)),
+    MSE = mean((real - pred)^2),
+    R2  = 1 - sum((real - pred)^2) / sum((real - mean(real))^2),
+    Sesgo = mean(pred - real),
+    N = length(real))
+
+```
+
+
+```{r}
+ajustar_D <- function(anios_train, anio_test, f = f_D) {
+  s  <- mod_df[complete.cases(mod_df[, vars_D]), ]
+  tr <- s[s$anio_obj %in% anios_train, ]
+  te <- s[s$anio_obj == anio_test, ]
+
+  ang_tr  <- ang_de(tr$WDR_sin, tr$WDR_cos)
+  centros <- sapply(split(seq_len(nrow(tr)), tr$estacion),
+                    function(i) centro_viento(ang_tr[i], log(tr$O3_fut[i])))
+
+  tr <- transformar(tr, centros)
+  te <- transformar(te, centros)
+  tr <- tr[complete.cases(tr[, all.vars(f_D)]), ]
+  te <- te[complete.cases(te[, all.vars(f_D)]), ]
+
+  m     <- lm(f, tr)
+  smear <- mean(exp(residuals(m)))
+  pred  <- exp(predict(m, te)) * smear
+
+  list(modelo   = m,
+       centros  = centros,
+       smear    = smear,
+       n_train  = nrow(tr),
+       metricas = metricas(te$O3_fut, pred),
+       preds    = data.frame(fecha_hora = te$fecha_hora, estacion = te$estacion,
+                             O3_fut = te$O3_fut, pred = pred,
+                             O3_pers = te$O3_ahora,
+                             imp_pred = te$imp_pred, imp_obj = te$imp_obj))
+}
+```
+
+# Resultados 
+
+```{r}
+# Entrenamiento 2021-2024, prueba 2025
+r_final1 <- ajustar_D(2021:2024, 2025)
+
+cat("Observaciones de entrenamiento:", r_final1$n_train, "\n")
+cat("Factor de smearing:", round(r_final1$smear, 4), "\n")
+cat("Centros de viento (grados):\n"); print(round(r_final1$centros))
+cat("\nMétricas en prueba (ppb):\n"); print(round(r_final1$metricas, 3))
+```
+
+
+```{r}
+# Entrenamiento 2021-2025, prueba 2026 (solo ene-jul)
+r_final2 <- ajustar_D(2021:2025, 2026)
+
+cat("Observaciones de entrenamiento:", r_final2$n_train, "\n")
+cat("Factor de smearing:", round(r_final2$smear, 4), "\n")
+cat("Centros de viento (grados):\n"); print(round(r_final2$centros))
+cat("\nMétricas en prueba (ppb):\n"); print(round(r_final2$metricas, 3))
+```
+
+```{r}
+# Validación 2025 (entrenamiento 2021-2024)
+r_val <- r_final1
+
+p25 <- r_val$preds
+p25$mes_obj <- as.integer(format(p25$fecha_hora + 24 * 3600, "%m", tz = "UTC"))
+p25_ej <- p25[p25$mes_obj %in% 1:7, ]
+
+m25 <- metricas(p25_ej$O3_fut, p25_ej$pred)
+
+# Prueba 2026 (entrenamiento 2021-2025)
+r_final <- r_final2
+
+p26 <- r_final$preds
+p26$mes_obj <- as.integer(format(p26$fecha_hora + 24 * 3600, "%m", tz = "UTC"))
+p26_ej <- p26[p26$mes_obj %in% 1:7, ]
+
+m26 <- metricas(p26_ej$O3_fut, p26_ej$pred)
+
+comp <- rbind(`2025 ene-jul (validación)` = m25,
+              `2026 ene-jul (prueba)`     = m26)
+print(round(comp, 3))
+```
+
+
+## Desempeño por estación y consistencia entre estaciones
+
+```{r}
+library(dplyr)
+
+p25 <- r_val$preds
+
+solo_ene_jul <- function(p) {
+  p$mes_obj <- as.integer(format(p$fecha_hora + 24 * 3600, "%m", tz = "UTC"))
+  p[p$mes_obj %in% 1:7, ]
+}
+p26 <- solo_ene_jul(r_final$preds)
+
+tab_global <- rbind(
+  `2025 completo (validación)`  = metricas(p25$O3_fut, p25$pred),
+  `2026 ene-jul (prueba)`       = metricas(p26$O3_fut, p26$pred)
+)
+print(round(tab_global, 3))
+```
+
+```{r matriz-confusion}
+matriz_confusion <- function(p, col_pred = "pred", u) {
+  ex <- p$O3_fut > u
+  al <- p[[col_pred]] > u 
+  VP <- sum( ex &  al); FN <- sum( ex & !al)
+  FP <- sum(!ex &  al); VN <- sum(!ex & !al)
+  c(N = length(ex), excedidas = VP + FN,
+    VP = VP, FN = FN, FP = FP, VN = VN,
+    sensibilidad_pct = 100 * VP / (VP + FN),
+    precision_pct    = if (VP + FP > 0) 100 * VP / (VP + FP) else NA,
+    tasa_FP_pct      = 100 * FP / (FP + VN),
+    exactitud_pct    = 100 * (VP + VN) / length(ex))
+}
+
+tabla_confusion <- function(u) {
+  tb <- rbind(
+    `Modelo 2025`  = matriz_confusion(p25, "pred",    u),
+    `Persistencia 2025` = matriz_confusion(p25, "O3_pers", u),
+    `Modelo 2026 ene-jul` = matriz_confusion(p26, "pred",    u),
+    `Persistencia 2026 ene-jul` = matriz_confusion(p26, "O3_pers", u))
+  cat("\nUmbral de", u, "ppb\n")
+  cat("VP = alerta y hora excedida | FN = hora excedida no detectada\n",
+      "FP = falsa alarma | VN = sin alerta y sin excedencia\n", sep = "")
+  print(round(tb, 1))
+  invisible(tb)
+}
+
+for (u in c(U_PRINCIPAL, U_NORMATIVO)) tabla_confusion(u)
+
+cuadro_2x2 <- function(p, col_pred = "pred", u) {
+  tb <- table(Real = factor(ifelse(p$O3_fut > u, "Excedida", "No excedida"),
+                            c("Excedida", "No excedida")),
+              Pronostico = factor(ifelse(p[[col_pred]] > u, "Alerta", "Sin alerta"),
+                                  c("Alerta", "Sin alerta")))
+  addmargins(tb)
+}
+cat("\nModelo, 2025, umbral de", U_PRINCIPAL, "ppb:\n"); print(cuadro_2x2(p25, "pred", U_PRINCIPAL))
+cat("\nPersistencia, 2025, umbral de", U_PRINCIPAL, "ppb:\n"); print(cuadro_2x2(p25, "O3_pers", U_PRINCIPAL))
+```
+
+
+## Comparación con la persistencia
+
+```{r persistencia}
+r_val_b <- ajustar_D(2021:2024, 2025, f_base)
+r_fin_b <- ajustar_D(2021:2025, 2026, f_base)
+p25_b <- r_val_b$preds
+p26_b <- solo_ene_jul(r_fin_b$preds)
+
+stopifnot(nrow(p25_b) == nrow(p25), nrow(p26_b) == nrow(p26),
+          isTRUE(all.equal(p25_b$O3_fut, p25$O3_fut)), isTRUE(all.equal(p26_b$O3_fut, p26$O3_fut)))
+
+comparar <- function(p, p_b) {
+  tb <- rbind(`Persistencia (O3 de hoy)` = metricas(p$O3_fut, p$O3_pers),
+              `Modelo mínimo (O3 hoy + hora + mes + estación)` = metricas(p_b$O3_fut, p_b$pred),
+              `Modelo D (completo)` = metricas(p$O3_fut, p$pred))
+  cbind(tb, mejora_MSE_vs_pers = 1 - tb[, "MSE"] / tb["Persistencia (O3 de hoy)", "MSE"])
+}
+cat("Validación 2025 (año completo)\n"); print(round(comparar(p25, p25_b), 3))
+cat("\nPrueba 2026 (ene-jul)\n"); print(round(comparar(p26, p26_b), 3))
+```
+
+```{r}
+est_tab <- function(p, periodo) {
+  p %>% group_by(estacion) %>%
+    summarise(n     = n(),
+              MAE   = mean(abs(O3_fut - pred)),
+              MSE   = mean((O3_fut - pred)^2),
+              R2    = 1 - sum((O3_fut - pred)^2) / sum((O3_fut - mean(O3_fut))^2),
+              R2_pers = 1 - sum((O3_fut - O3_pers)^2) / sum((O3_fut - mean(O3_fut))^2),
+              sd_O3 = sd(O3_fut),
+              .groups = "drop") %>%
+    mutate(periodo = periodo)
+}
+
+p25_ene_jul <- solo_ene_jul(p25)
+tab_est <- bind_rows(est_tab(p25, "2025 completo"),
+                     est_tab(p25_ene_jul, "2025 ene-jul"),
+                     est_tab(p26, "2026 ene-jul"))
+tab_est$estacion <- as.character(tab_est$estacion)
+
+horas_periodo <- c(`2025 completo` = 8760, `2025 ene-jul` = 5088, `2026 ene-jul` = 5088)
+tab_est$cobertura_pct <- round(100 * tab_est$n / horas_periodo[tab_est$periodo], 1)
+
+tabla_wide <- function(v, dec) {
+  round(tapply(tab_est[[v]], list(tab_est$estacion, tab_est$periodo), sum), dec)
+}
+
+cat("Horas evaluadas por estación (NA = la estación no tiene horas en ese periodo):\n")
+print(tabla_wide("n", 0))
+cat("\nCobertura del periodo (%):\n")
+print(tabla_wide("cobertura_pct", 1))
+
+cat("\nEstaciones con cobertura menor al 75 %:\n")
+print(as.data.frame(tab_est[tab_est$cobertura_pct < 75, c("estacion", "periodo", "n", "cobertura_pct")]), row.names = FALSE)
+
+cat("\nR2 del modelo por estación:\n"); print(tabla_wide("R2", 3))
+cat("\nR2 de la persistencia por estación:\n"); print(tabla_wide("R2_pers", 3))
+cat("\nDesviación estándar del O3 observado (ppb).\n")
+print(tabla_wide("sd_O3", 1))
+cat("\nMSE (ppb^2):\n"); print(tabla_wide("MSE", 1))
+cat("\nMAE (ppb):\n");   print(tabla_wide("MAE", 2))
+
+tab_global <- rbind(tab_global,
+  `2025 ene-jul (referencia)` = metricas(p25_ene_jul$O3_fut, p25_ene_jul$pred))
+print(round(tab_global, 3))
+```
+
+
+```{r}
+calib <- function(p) {
+  g <- cut(p$pred, c(-Inf, 20, 30, 40, 50, 60, Inf),
+           labels = c("<20", "20-30", "30-40", "40-50", "50-60", ">60"))
+  do.call(rbind, lapply(levels(g), function(l) {
+    i <- g == l
+    data.frame(pred_grupo = l,
+               n          = sum(i),
+               pred_medio = round(mean(p$pred[i]), 1),
+               obs_medio  = round(mean(p$O3_fut[i]), 1))
+  }))
+}
+
+cat("\nModelo D: calibración (validación 2025, año completo)\n")
+print(calib(r_val$preds))
+
+cat("\nModelo D: calibración de 2026\n")
+print(calib(p26))
+```
+
+```{r}
+auc <- function(score, ev) {
+  r  <- rank(score)
+  n1 <- sum(ev); n0 <- sum(!ev)
+  (sum(r[ev]) - n1 * (n1 + 1) / 2) / (n1 * n0)
+}
+```
+
+## Umbrales principal y normativo
+
+```{r umbrales}
+tabla_umbrales <- function(p, col_pred = "pred", umbrales = c(U_PRINCIPAL, U_NORMATIVO)) {
+  do.call(rbind, lapply(umbrales, function(u) {
+    ev <- p$O3_fut > u
+    al <- p[[col_pred]] > u
+    data.frame(umbral_ppb       = u,
+               horas_excedidas  = sum(ev),
+               tasa_base        = round(mean(ev), 4),
+               alertas          = sum(al),
+               aciertos         = sum(al & ev),
+               falsas_alarmas   = sum(al & !ev),
+               no_detectadas    = sum(!al & ev),
+               exhaustividad    = round(sum(al & ev) / sum(ev), 3),
+               precision        = round(sum(al & ev) / sum(al), 3),
+               AUC              = round(auc(p[[col_pred]], ev), 3))
+  }))
+}
+cat("Modelo D, validación 2025 (año completo)\n"); print(tabla_umbrales(p25), row.names = FALSE)
+cat("\nPersistencia, validación 2025\n"); print(tabla_umbrales(p25, "O3_pers"), row.names = FALSE)
+cat("\nModelo D, prueba 2026 (ene-jul)\n"); print(tabla_umbrales(p26), row.names = FALSE)
+cat("\nPersistencia, prueba 2026\n"); print(tabla_umbrales(p26, "O3_pers"), row.names = FALSE)
+```
+
+```{r fig-errores}
+library(plotly)
+
+tipo_error <- function(real, pred, u_ev, u_alerta) {
+  ev <- real > u_ev
+  al <- pred > u_alerta
+  ifelse(ev & !al, "Hora excedida no detectada",
+         ifelse(!ev & al, "Falsa alarma", "Sin error crítico"))
+}
+
+graf_errores <- function(p, est, u_ev = U_EV, u_alerta = U_ALERTA) {
+  d <- p[p$estacion == est, ]
+  d$t_obj <- d$fecha_hora + 24 * 3600
+  d <- d[order(d$t_obj), ]
+  d$tipo <- tipo_error(d$O3_fut, d$pred, u_ev, u_alerta)
+
+  g    <- seq(min(d$t_obj), max(d$t_obj), by = "hour")
+  idx  <- match(g, d$t_obj)
+  y    <- d$O3_fut[idx]  # ppb
+  tipo <- d$tipo[idx]
+
+  capa <- function(k) {
+    sel <- !is.na(tipo) & tipo == k
+    sel <- sel | c(sel[-1], FALSE)
+    ifelse(sel, y, NA_real_)
+  }
+
+  plot_ly() %>%
+    add_lines(x = g, y = capa("Sin error crítico"), name = "Sin Error Crítico (Gris)",
+              line = list(color = "#9E9E9E", width = 1), connectgaps = FALSE) %>%
+    add_lines(x = g, y = capa("Falsa alarma"), name = "Falsa Alarma (Amarillo)",
+              line = list(color = "#E6B800", width = 1), connectgaps = FALSE) %>%
+    add_lines(x = g, y = capa("Hora excedida no detectada"), name = "Hora excedida no detectada (Rojo)",
+              line = list(color = "#E03A1E", width = 1), connectgaps = FALSE) %>%
+    layout(title  = paste0("Errores en Predicción de O3 (estación ", est, ", 2025)"),
+           xaxis  = list(title = "Fecha y Hora"),
+           yaxis  = list(title = "O3 (ppb)"),
+           legend = list(orientation = "h", x = 0.5, xanchor = "center", y = 1.08))
+}
+
+est_graf <- names(which.max(table(p25$estacion[p25$O3_fut > U_EV])))
+cat("Estación graficada:", est_graf, "\n")
+graf_errores(p25, est_graf)
+
+print(table(tipo_error(p25$O3_fut, p25$pred, U_EV, U_ALERTA)))
+```
+
+
+## Episodios (horas excedidas consecutivas)
+
+```{r episodios}
+episodios <- function(p, u_ev = U_EV, u_alerta = U_ALERTA, col_pred = "pred") {
+  p$t_obj <- p$fecha_hora + 24 * 3600
+  p <- p[order(p$estacion, p$t_obj), ]
+  res <- lapply(split(p, droplevels(p$estacion)), function(d) {
+    n    <- nrow(d)
+    cont <- c(FALSE, diff(as.numeric(d$t_obj)) == 3600)
+    id_ep <- function(flag) {
+      prev <- c(FALSE, flag[-n]) & cont
+      cumsum(flag & !prev) * flag
+    }
+    ev <- d$O3_fut > u_ev;  al <- d[[col_pred]] > u_alerta
+    ie <- id_ep(ev);        ia <- id_ep(al)
+    reales  <- setdiff(unique(ie), 0)
+    alertas <- setdiff(unique(ia), 0)
+    data.frame(estacion        = as.character(d$estacion[1]),
+               ep_reales       = length(reales),
+               ep_detectados   = sum(vapply(reales,  function(k) any(al[ie == k]),  logical(1))),
+               ep_alerta       = length(alertas),
+               ep_alerta_falsa = sum(vapply(alertas, function(k) !any(ev[ia == k]), logical(1))))
+  })
+  do.call(rbind, res)
+}
+ep25 <- episodios(p25); ep26 <- episodios(p26)
+resumen_ep <- function(e) c(ep_reales = sum(e$ep_reales), ep_detectados = sum(e$ep_detectados),
+                            pct_detectado = round(100 * sum(e$ep_detectados) / sum(e$ep_reales), 1),
+                            ep_alerta = sum(e$ep_alerta), ep_alerta_falsa = sum(e$ep_alerta_falsa))
+dur_ep <- function(p, u = U_EV) {
+  p$t_obj <- p$fecha_hora + 24 * 3600
+  p <- p[order(p$estacion, p$t_obj), ]
+  unlist(lapply(split(p, droplevels(p$estacion)), function(d) {
+    ev <- d$O3_fut > u
+    cont <- c(FALSE, diff(as.numeric(d$t_obj)) == 3600)
+    id <- cumsum(ev & !(c(FALSE, ev[-length(ev)]) & cont)) * ev
+    as.numeric(table(id[id > 0]))
+  }))
+}
+for (u in c(U_PRINCIPAL, U_NORMATIVO)) {
+  cat("\nEpisodios con umbral de", u, "ppb\n")
+  print(rbind(`Modelo 2025` = resumen_ep(episodios(p25, u, u)),
+              `Persistencia 2025` = resumen_ep(episodios(p25, u, u, "O3_pers")),
+              `Modelo 2026`  = resumen_ep(episodios(p26, u, u)),
+              `Persistencia 2026` = resumen_ep(episodios(p26, u, u, "O3_pers"))))
+  cat("Duración mediana de los episodios reales (h): 2025 =", median(dur_ep(p25, u)),
+      "| 2026 =", median(dur_ep(p26, u)), "\n")
+}
+```
+
+```{r fig-errores-todas, fig.width=14, fig.height=9}
+graf_errores_base <- function(p, est, ylim, xlim, meses, u_ev = U_EV, u_alerta = U_ALERTA) {
+  d <- p[p$estacion == est, ]
+  d$t_obj <- d$fecha_hora + 24 * 3600
+  d <- d[order(d$t_obj), ]
+  d$tipo <- tipo_error(d$O3_fut, d$pred, u_ev, u_alerta)
+
+  g    <- seq(min(d$t_obj), max(d$t_obj), by = "hour")
+  idx  <- match(g, d$t_obj)
+  y    <- d$O3_fut[idx]
+  tipo <- d$tipo[idx]
+
+  capa <- function(k) {
+    sel <- !is.na(tipo) & tipo == k
+    sel <- sel | c(sel[-1], FALSE)
+    ifelse(sel, y, NA_real_)
+  }
+
+  plot(g, y, type = "n", xlim = xlim, ylim = ylim, xaxt = "n", xlab = "", ylab = "O3 (ppb)",
+       main = paste0(est, "  (rojo: ", sum(d$tipo == "Hora excedida no detectada"),
+                     " | amarillo: ", sum(d$tipo == "Falsa alarma"), ")"), cex.main = 0.95)
+  axis.POSIXct(1, at = meses, format = "%b")
+  abline(h = u_ev, lty = 3)
+  lines(g, capa("Sin error crítico"), col = "#9E9E9E", lwd = 0.8)
+  lines(g, capa("Falsa alarma"), col = "#E6B800", lwd = 0.8)
+  lines(g, capa("Hora excedida no detectada"),  col = "#E03A1E", lwd = 0.8)
+}
+
+dibujar_errores <- function(p) {
+  ests  <- sort(unique(as.character(p$estacion)))
+  ylim  <- c(0, max(p$O3_fut))
+  xlim  <- range(p$fecha_hora) + 24 * 3600
+  meses <- seq(as.POSIXct("2025-01-01", tz = "UTC"), by = "3 months", length.out = 5)
+  par(mfrow = c(4, 4), mar = c(2.5, 4.2, 2.2, 0.6))
+  for (e in ests) graf_errores_base(p, e, ylim, xlim, meses)
+  plot.new()
+  legend("center", bty = "n", lwd = 2, cex = 1.1,
+         col = c("#9E9E9E", "#E6B800", "#E03A1E"),
+         legend = c("Sin error crítico (gris)", "Falsa alarma (amarillo)",
+                    "Hora excedida no detectada (rojo)"))
+  par(mfrow = c(1, 1))
+}
+
+dibujar_errores(p25)
+```
+
+
+```{r residuos}
+p <- r_val$preds
+p$res <- p$O3_fut - p$pred
+
+rejilla <- function(d) {
+  d <- d[order(d$fecha_hora), ]
+  g <- seq(min(d$fecha_hora), max(d$fecha_hora), by = "hour")
+  d$res[match(g, d$fecha_hora)]
+}
+
+res_est  <- lapply(split(p, p$estacion), rejilla)
+acf_est  <- sapply(res_est, function(x)
+  acf(x, lag.max = 72, na.action = na.pass, plot = FALSE)$acf[, 1, 1])
+acf_prom <- rowMeans(acf_est)
+
+cat("ACF promedio de los residuos del modelo D (validación 2025) en los rezagos 1, 2, 3, 12, 24 y 48:\n")
+print(round(acf_prom[c(2, 3, 4, 13, 25, 49)], 3))
+```
+
+```{r}
+plot(0:72, acf_prom, type = "h", xlab = "Rezago (horas)", ylab = "ACF promedio",
+     main = "Autocorrelación de los residuos")
+abline(h = 0); abline(v = c(24, 48, 72), col = "red", lty = 2)
+```
+
+
+```{r }
+s  <- mod_df[complete.cases(mod_df[, vars_D]), ]
+tr <- s[s$anio_obj %in% 2021:2024, ]
+
+ang_tr  <- ang_de(tr$WDR_sin, tr$WDR_cos)
+centros <- sapply(split(seq_len(nrow(tr)), tr$estacion),
+                  function(i) centro_viento(ang_tr[i], log(tr$O3_fut[i])))
+tr <- transformar(tr, centros)
+tr <- tr[complete.cases(tr[, all.vars(f_D)]), ]
+
+mD <- lm(f_D, tr)
+cat("R2 ajustado (escala log):", round(summary(mD)$adj.r.squared, 4), "\n")
+
+
+set.seed(42)
+idx <- sample(length(residuals(mD)), 50000)
+
+par(mfrow = c(1, 2))
+plot(fitted(mD)[idx], residuals(mD)[idx], pch = 16, col = rgb(0, 0, 0, 0.1),
+     xlab = "Ajustado (log O3)", ylab = "Residuo", main = "Residuos vs ajustados")
+abline(h = 0, col = "red")
+qqnorm(residuals(mD)[idx], pch = 16, col = rgb(0, 0, 0, 0.1), main = "Q-Q de residuos")
+qqline(residuals(mD)[idx], col = "red")
+par(mfrow = c(1, 1))
+
+dq  <- cut(fitted(mD), quantile(fitted(mD), 0:10 / 10), include.lowest = TRUE)
+sds <- tapply(residuals(mD), dq, sd)
+cat("SD del residuo por decil del ajuste (log):\n"); print(round(sds, 3))
+cat("Razón decil 10 / decil 1:", round(sds[10] / sds[1], 2), "\n")
+print(bptest(mD))
+
+library(car)
+v <- car::vif(mD)
+print(round(v, 2))
+
+d1  <- drop1(mD)
+imp <- data.frame(termino       = rownames(d1),
+                  gl            = d1$Df,
+                  aumento_SCR   = round(d1$`Sum of Sq`, 1))
+imp <- imp[-1, ]
+imp$pct_del_aumento_total <- round(100 * imp$aumento_SCR / sum(imp$aumento_SCR), 1)
+print(imp[order(-imp$aumento_SCR), ], row.names = FALSE)
+
+rm(mD, tr, s); invisible(gc())
+```
+
+
+```{r}
+library(dplyr)
+
+vars_km <- c("TOUT", "RH", "SR", "WSR", "PRS", "WDR_sin", "WDR_cos", "NO", "NO2", "CO")
+
+dia_df <- mod_df %>%
+  mutate(fecha = as.Date(fecha_hora), anio = as.integer(format(fecha_hora, "%Y"))) %>%
+  group_by(estacion, fecha, anio) %>%
+  summarise(n_h = sum(rowSums(is.na(across(all_of(vars_km)))) == 0),
+            O3  = mean(O3, na.rm = TRUE),
+            across(all_of(vars_km), ~ mean(.x, na.rm = TRUE)), .groups = "drop") %>%
+  filter(n_h >= 18) %>%
+  mutate(across(c(NO, NO2, CO), log1p))
+dia_df <- dia_df[complete.cases(dia_df[, vars_km]), ]
+
+ent    <- dia_df[dia_df$anio %in% 2021:2024, ]
+mu_est <- sapply(vars_km, function(v) tapply(ent[[v]], ent$estacion, mean))
+
+centrar <- function(d) as.matrix(d[, vars_km]) - mu_est[as.character(d$estacion), , drop = FALSE]
+X_ent <- centrar(ent)
+mu_x  <- colMeans(X_ent); sd_x <- apply(X_ent, 2, sd)
+esc   <- function(X) sweep(sweep(X, 2, mu_x), 2, sd_x, "/")
+Z_ent <- esc(X_ent)
+cat("Días-estación en entrenamiento (2021-2024):", nrow(Z_ent),
+    " | totales 2021-2026:", nrow(dia_df), "\n")
+```
+
+```{r km-pca, fig.width=7, fig.height=4}
+R <- cor(Z_ent); n <- nrow(Z_ent); p <- ncol(Z_ent)
+cat("Bartlett: chi2 =", round(-(n - 1 - (2 * p + 5) / 6) * log(det(R)), 0),
+    " gl =", p * (p - 1) / 2, "\n")
+iR <- solve(R); Q <- -iR / sqrt(outer(diag(iR), diag(iR))); diag(Q) <- 0
+R0 <- R; diag(R0) <- 0
+cat("KMO global:", round(sum(R0^2) / (sum(R0^2) + sum(Q^2)), 3), "\n\n")
+
+pca <- prcomp(Z_ent)
+ev  <- pca$sdev^2
+ve  <- ev / sum(ev)
+print(round(rbind(autovalor = ev, var_acumulada = cumsum(ve)), 3))
+
+caidas <- -diff(ev)
+cat("\nCaída del autovalor de cada componente al siguiente:\n")
+print(round(setNames(caidas, paste0(seq_along(caidas), "->", seq_along(caidas) + 1)), 3))
+
+npc <- 5
+cat("\nComponentes retenidos:", npc, "| varianza acumulada:", round(100 * cumsum(ve)[npc], 1), "%\n")
+
+cat("\nCargas de los componentes retenidos:\n")
+print(round(pca$rotation[, 1:npc], 2))
+
+plot(ev, type = "b", pch = 16, xlab = "Componente", ylab = "Autovalor",
+     main = "Gráfico de sedimentación")
+abline(h = 1, lty = 3)
+abline(v = npc + 0.5, lty = 2, col = "red")
+S_ent <- pca$x[, 1:npc]
+```
+
+
+
+```{r km-eleccion, fig.width=10, fig.height=3.5}
+ari <- function(a, b) {
+  tab <- table(a, b); sc <- function(x) sum(choose(x, 2))
+  si <- sc(rowSums(tab)); sj <- sc(colSums(tab)); sij <- sc(tab)
+  e <- si * sj / choose(sum(tab), 2); (sij - e) / ((si + sj) / 2 - e)
+}
+
+ks <- 2:8
+set.seed(123)
+ajustes <- lapply(ks, function(k) kmeans(S_ent, centers = k, nstart = 25, iter.max = 100))
+tw  <- sapply(ajustes, function(r) r$tot.withinss)
+idx <- sample(nrow(S_ent), 3000); dd <- dist(S_ent[idx, ])
+sil <- sapply(ajustes, function(r) mean(cluster::silhouette(r$cluster[idx], dd)[, 3]))
+est <- sapply(ks, function(k) {
+  set.seed(1); a <- suppressWarnings(kmeans(S_ent, k, nstart = 1, iter.max = 100))$cluster
+  set.seed(2); b <- suppressWarnings(kmeans(S_ent, k, nstart = 1, iter.max = 100))$cluster
+  ari(a, b)
+})
+print(round(rbind(k = ks, suma_dentro = tw, silueta = sil, estabilidad_ARI = est,
+                  varianza_entre = sapply(ajustes, function(r) r$betweenss / r$totss)), 3))
+
+par(mfrow = c(1, 3))
+plot(ks, tw,  type = "b", pch = 16, xlab = "k", ylab = "Suma dentro de grupos", main = "Codo")
+plot(ks, sil, type = "b", pch = 16, xlab = "k", ylab = "Silueta promedio",      main = "Silueta")
+plot(ks, est, type = "b", pch = 16, xlab = "k", ylab = "ARI entre semillas",    main = "Estabilidad")
+par(mfrow = c(1, 1))
+```
+
+
+```{r km-ajuste, fig.width=6, fig.height=5}
+K <- 3
+set.seed(123)
+km <- kmeans(S_ent, centers = K, nstart = 25, iter.max = 100)
+
+ent$cl <- km$cluster
+mapa <- setNames(seq_len(K), order(tapply(ent$O3, ent$cl, mean)))
+
+asignar <- function(d) {                       
+  S <- predict(pca, esc(centrar(d)))[, 1:npc, drop = FALSE]
+  d2 <- sapply(seq_len(K), function(j)
+    rowSums((S - matrix(km$centers[j, ], nrow(S), npc, byrow = TRUE))^2))
+  as.integer(mapa[as.character(max.col(-d2))])
+}
+dia_df$cl <- asignar(dia_df)
+
+cat("Días por grupo y año:\n"); print(table(grupo = dia_df$cl, anio = dia_df$anio))
+
+perfil <- t(sapply(seq_len(K), function(j) {
+  d <- dia_df[dia_df$cl == j, ]
+  c(dias = nrow(d), TOUT = mean(d$TOUT), RH = mean(d$RH), SR = mean(d$SR),
+    WSR = mean(d$WSR), PRS = mean(d$PRS),
+    dir_viento = ang_de(mean(d$WDR_sin), mean(d$WDR_cos)),
+    NO = expm1(mean(d$NO)), NO2 = expm1(mean(d$NO2)), CO = expm1(mean(d$CO)),
+    O3_medio = mean(d$O3))
+}))
+rownames(perfil) <- paste("Perfil", seq_len(K))
+cat("\nCriterios observables de cada perfil (medias del día, escala original):\n"); print(round(perfil, 2))
+
+vz   <- c("TOUT", "RH", "SR", "WSR", "PRS", "NO", "NO2", "CO", "O3")
+Zdia <- scale(dia_df[, vz])
+perfil_z <- t(sapply(seq_len(K), function(j) colMeans(Zdia[dia_df$cl == j, , drop = FALSE])))
+rownames(perfil_z) <- paste("Perfil", seq_len(K))
+cat("\nPerfil estandarizado:\n"); print(round(perfil_z, 2))
+
+mes <- table(dia_df$cl, as.integer(format(dia_df$fecha, "%m")))
+cat("\n% de los días de cada perfil por mes:\n"); print(round(prop.table(mes, 1) * 100))
+
+set.seed(1); mm <- sample(nrow(S_ent), 4000)
+plot(S_ent[mm, 1], S_ent[mm, 2], pch = 16, cex = 0.5,
+     col = c("#4575B4", "#E6B800", "#D73027")[as.integer(mapa[as.character(km$cluster[mm])])],
+     xlab = "CP1", ylab = "CP2", main = "Días de entrenamiento por perfil")
+legend("topright", legend = paste("Perfil", 1:K), pch = 16, col = c("#4575B4", "#E6B800", "#D73027"))
+```
+
+
+```{r}
+err_por_grupo <- function(p) {
+  p$fecha <- as.Date(p$fecha_hora)
+  p$cl <- dia_df$cl[match(paste(p$estacion, p$fecha), paste(dia_df$estacion, dia_df$fecha))]
+  cat("Horas sin perfil asignado:", sum(is.na(p$cl)), "de", nrow(p), "\n")
+  p <- p[!is.na(p$cl), ]
+  tb <- t(sapply(seq_len(K), function(j) {
+    d <- p[p$cl == j, ]; m <- metricas(d$O3_fut, d$pred); ex <- d$O3_fut > U_EV
+    c(N = m[["N"]], O3_obs = mean(d$O3_fut), pct_horas_exc = 100 * mean(ex),
+      RMSE = m[["RMSE"]], Sesgo = m[["Sesgo"]], R2 = m[["R2"]],
+      horas_det_pct = 100 * mean(d$pred[ex] > U_ALERTA),
+      horas_exc_no_detectadas = sum(ex & d$pred <= U_ALERTA))
+  }))
+  rownames(tb) <- paste("Perfil", seq_len(K)); round(tb, 2)
+}
+cat("Validación 2025\n"); print(err_por_grupo(p25))
+cat("\nPrueba 2026 (ene-jul)\n"); print(err_por_grupo(p26))
+```
+
+## Lecturas de NO fuera del rango de operación de SIMA
+
+```{r no-rango-sima}
+lim_no <- c(`2021` = 350, `2022` = 400, `2023` = 500, `2024` = 400, `2025` = 350)
+
+fuera_no <- !is.na(df$NO) & df$anio %in% as.integer(names(lim_no)) &
+            df$NO > lim_no[as.character(df$anio)]
+cat("Lecturas de NO fuera del rango de operación de SIMA (2021-2025):", sum(fuera_no), "\n\n")
+print(table(estacion = df$estacion[fuera_no], anio = df$anio[fuera_no]))
+
+x <- df[fuera_no, c("estacion", "fecha_hora", "anio", "NO")]
+x$limite_SIMA <- lim_no[as.character(x$anio)]
+print(x[order(-x$NO), ], row.names = FALSE)
+
+cat("\nDistribución de NO (ppb):\n")
+print(round(quantile(df$NO, c(0.5, 0.99, 0.999, 1), na.rm = TRUE), 1))
+```
+
+```{r no-sensibilidad}
+claves_fuera <- paste(df$estacion, df$fecha_hora)[fuera_no]
+claves_pred <- paste(r_val$preds$estacion, r_val$preds$fecha_hora)
+p_comun     <- r_val$preds[!(claves_pred %in% claves_fuera), ]
+
+mod_df_orig <- mod_df
+mod_df$NO[paste(mod_df$estacion, mod_df$fecha_hora) %in% claves_fuera] <- NA
+r_sens <- ajustar_D(2021:2024, 2025)
+mod_df <- mod_df_orig
+rm(mod_df_orig); invisible(gc())
+
+cat("N validación: original =", r_val$metricas[["N"]],
+    "| sin lecturas fuera de rango =", r_sens$metricas[["N"]], "\n\n")
+print(round(rbind(`Original, todas las horas`         = r_val$metricas,
+                  `Original, mismas horas`            = metricas(p_comun$O3_fut, p_comun$pred),
+                  `Reajustado sin lecturas fuera de rango` = r_sens$metricas), 3))
+
+cat("\nCoeficiente de NO: original =", signif(coef(r_val$modelo)[["NO"]], 4),
+    "| reajustado =", signif(coef(r_sens$modelo)[["NO"]], 4), "\n")
+```
+
+
+## Sensibilidad a la imputación (SAITS)
+
+```{r sens-imputacion}
+if (!hay_mascara) {
+  cat("No hay máscara.\n")
+} else {
+  sens <- function(p, etiqueta) {
+    quitar_pred <- p$imp_pred
+    quitar_todo <- p$imp_pred | p$imp_obj
+    f <- function(i, nombre) {
+      q <- p[i, ]
+      c(metricas(q$O3_fut, q$pred)[c("MAE", "RMSE", "R2", "Sesgo", "N")],
+        R2_persistencia = metricas(q$O3_fut, q$O3_pers)[["R2"]],
+        exhaustividad_principal = mean(q$pred[q$O3_fut > U_PRINCIPAL] > U_PRINCIPAL),
+        precision_principal     = mean(q$O3_fut[q$pred > U_PRINCIPAL] > U_PRINCIPAL),
+        exhaustividad_normativo = mean(q$pred[q$O3_fut > U_NORMATIVO] > U_NORMATIVO))
+    }
+    out <- rbind(`Todas las horas`                            = f(rep(TRUE, nrow(p))),
+                 `Sin predictoras imputadas`                  = f(!quitar_pred),
+                 `Sin predictoras ni objetivo imputados`      = f(!quitar_todo))
+    cat("\n", etiqueta, " | % de horas con predictora imputada:", round(100 * mean(quitar_pred), 1),
+        " | con predictora u objetivo imputado:", round(100 * mean(quitar_todo), 1), "\n", sep = "")
+    print(round(out, 3))
+  }
+  sens(p25, "Validación 2025 (año completo)")
+  sens(p26, "Prueba 2026 (ene-jul)")
+}
+```
+
+## Comparación con el mismo número de alertas
+
+```{r alertas-iguales}
+comparar_igual_alertas <- function(u) {
+  n_pers <- sum(p25$O3_pers > u)
+  u_eq   <- sort(p25$pred, decreasing = TRUE)[n_pers]
+  exh <- function(p, al) round(100 * sum(al & p$O3_fut > u) / sum(p$O3_fut > u), 1)
+  cat("Umbral", u, "ppb | alerta equivalente del modelo:", round(u_eq, 2), "ppb\n")
+  print(c(modelo_2025 = exh(p25, p25$pred >= u_eq), persistencia_2025 = exh(p25, p25$O3_pers > u),
+          modelo_2026 = exh(p26, p26$pred >= u_eq), persistencia_2026 = exh(p26, p26$O3_pers > u)))
+}
+comparar_igual_alertas(U_PRINCIPAL)
+comparar_igual_alertas(U_NORMATIVO)
+```
+
+## Incertidumbre: bootstrap por bloques temporales
+
+```{r bootstrap-bloques}
+boot_bloques <- function(p, p_b, u, B = 2000, dias = 7, seed = 2026) {
+  stopifnot(nrow(p) == nrow(p_b), isTRUE(all.equal(p$O3_fut, p_b$O3_fut)))
+  t_obj <- p$fecha_hora + 24 * 3600
+  dia   <- as.Date(t_obj, tz = "UTC")
+  blk   <- as.integer(dia - min(dia)) %/% dias
+  y  <- p$O3_fut
+  ex <- y > u
+  X <- cbind(ym = (p$pred - y)^2,
+             yr = (p_b$pred - y)^2,
+             yp = (p$O3_pers - y)^2,
+             y = y, y2 = y^2, n = 1,
+             ex = ex, dm = ex & p$pred > u, dp = ex & p$O3_pers > u)
+  G <- rowsum(X, blk)
+
+  d0 <- data.frame(est = p$estacion, t = t_obj, blk = blk, ex = ex,
+                   am = p$pred > u, ap = p$O3_pers > u)
+  ep <- do.call(rbind, lapply(split(d0, d0$est, drop = TRUE), function(d) {
+    d <- d[order(d$t), ]; n <- nrow(d)
+    cont <- c(FALSE, diff(as.numeric(d$t)) == 3600)
+    id <- cumsum(d$ex & !(c(FALSE, d$ex[-n]) & cont)) * d$ex
+    if (!any(id > 0)) return(NULL)
+    k <- id[id > 0]
+    data.frame(blk = as.integer(tapply(d$blk[id > 0], k, function(z) z[1])),
+               dm  = as.numeric(tapply(d$am[id > 0], k, any)),
+               dp  = as.numeric(tapply(d$ap[id > 0], k, any)))
+  }))
+  E  <- matrix(0, nrow(G), 3, dimnames = list(rownames(G), c("ne", "dem", "dep")))
+  Eb <- rowsum(cbind(ne = 1, dem = ep$dm, dep = ep$dp), ep$blk)
+  E[rownames(Eb), ] <- Eb
+  A <- cbind(G, E)
+
+  est <- function(S) {
+    sst <- S[, "y2"] - S[, "y"]^2 / S[, "n"]
+    r2m <- 1 - S[, "ym"] / sst; r2r <- 1 - S[, "yr"] / sst; r2p <- 1 - S[, "yp"] / sst
+    cbind(R2_modelo                   = r2m,
+          R2_minimo                   = r2r,
+          R2_persistencia             = r2p,
+          dif_R2_modelo_vs_pers       = r2m - r2p,
+          dif_R2_modelo_vs_minimo     = r2m - r2r,
+          RMSE_modelo                 = sqrt(S[, "ym"] / S[, "n"]),
+          mejora_MSE_vs_pers_pct      = 100 * (1 - S[, "ym"] / S[, "yp"]),
+          horas_det_modelo_pct        = 100 * S[, "dm"] / S[, "ex"],
+          horas_det_pers_pct          = 100 * S[, "dp"] / S[, "ex"],
+          dif_horas_pers_menos_modelo = 100 * (S[, "dp"] - S[, "dm"]) / S[, "ex"],
+          epis_det_modelo_pct         = 100 * S[, "dem"] / S[, "ne"],
+          epis_det_pers_pct           = 100 * S[, "dep"] / S[, "ne"])
+  }
+  obs <- est(t(colSums(A)))
+  set.seed(seed); nb <- nrow(A)
+  bs <- do.call(rbind, lapply(seq_len(B), function(b)
+    est(t(colSums(A[sample.int(nb, nb, replace = TRUE), , drop = FALSE])))))
+  ic <- apply(bs, 2, quantile, probs = c(0.025, 0.975), na.rm = TRUE)
+  cat("Umbral:", u, "ppb | bloques de", dias, "días:", nb, "| réplicas:", B, "\n")
+  round(data.frame(estimado = as.numeric(obs), li_95 = ic[1, ], ls_95 = ic[2, ],
+                   row.names = colnames(obs)), 3)
+}
+
+for (u in c(U_PRINCIPAL, U_NORMATIVO)) {
+  cat("\nValidación 2025\n");        print(boot_bloques(p25, p25_b, u))
+  cat("\nPrueba 2026 (ene-jul)\n"); print(boot_bloques(p26, p26_b, u))
+}
+```
+
+```{r}
+RUTA_O3 <- "data/final/o3_horario_medido_2021_2026.csv"
+o3 <- read.csv(RUTA_O3)
+o3$fecha_hora <- as.POSIXct(o3$fecha_hora, tz = "UTC")
+
+max8h_nom020 <- function(d) {
+  d <- d[order(d$fecha_hora), ]
+  g <- data.frame(fecha_hora = seq(min(d$fecha_hora), max(d$fecha_hora), by = "hour"))
+  g$O3 <- d$O3[match(g$fecha_hora, d$fecha_hora)]
+  x  <- ifelse(is.na(g$O3), 0, g$O3)
+  ok <- as.numeric(!is.na(g$O3))
+  suma <- stats::filter(x,  rep(1, 8), sides = 1) 
+  nval <- stats::filter(ok, rep(1, 8), sides = 1)
+  g$m8 <- ifelse(!is.na(nval) & nval >= 6, suma / nval, NA)
+  g$fecha <- as.Date(g$fecha_hora, tz = "UTC")
+  n8  <- tapply(!is.na(g$m8), g$fecha, sum)
+  mx  <- tapply(g$m8, g$fecha, function(v) if (all(is.na(v))) NA_real_ else max(v, na.rm = TRUE))
+  out <- data.frame(estacion = d$estacion[1], fecha = as.Date(names(mx)),
+                    n8 = as.integer(n8), max8h = as.numeric(mx))
+  out$max8h[out$n8 < 18] <- NA
+  out
+}
+
+dias <- do.call(rbind, lapply(split(o3, o3$estacion), max8h_nom020))
+dias$anio <- as.integer(format(dias$fecha, "%Y"))
+dias <- dias[dias$anio %in% 2021:2025, ]
+
+req_dias <- function(a) ifelse((a %% 4 == 0 & a %% 100 != 0) | a %% 400 == 0, 275, 274)
+anual <- do.call(rbind, lapply(split(dias, list(dias$estacion, dias$anio), drop = TRUE), function(d) {
+  v <- d$max8h[!is.na(d$max8h)]
+  data.frame(estacion = d$estacion[1], anio = d$anio[1], dias_validos = length(v),
+             valido = length(v) >= req_dias(d$anio[1]),
+             max_de_max = if (length(v)) max(v) else NA,
+             media_de_max = if (length(v)) mean(v) else NA)
+}))
+
+cat("Días con máximo de 8 h válido por estación y año:\n")
+print(with(anual, tapply(dias_validos, list(estacion, anio), sum)))
+
+est_comp <- names(which(tapply(anual$valido, anual$estacion, all)))
+cat("\nEstaciones válidas en 2021-2025:", paste(est_comp, collapse = ", "), "\n")
+comp <- anual[anual$estacion %in% est_comp, ]
+
+cat("\nMáximo de los máximos diarios de 8 h (ppb), indicador de la NOM-020:\n")
+print(round(with(comp, tapply(max_de_max, list(estacion, anio), sum)), 1))
+cat("\nPromedio de los máximos diarios de 8 h (ppb), resumen descriptivo:\n")
+print(round(with(comp, tapply(media_de_max, list(estacion, anio), sum)), 1))
+
+res <- aggregate(cbind(max_de_max, media_de_max) ~ anio, data = comp, FUN = median)
+cat("\nMediana entre estaciones (ppb):\n"); print(round(res, 1))
+
+
+lim <- c(`2021` = 70, `2022` = 65, `2023` = 65, `2024` = 60, `2025` = 60)
+cat("\nEstaciones (de", length(est_comp), ") que rebasan el límite de 8 h vigente en cada año:\n")
+print(sapply(names(lim), function(a) sum(comp$max_de_max[comp$anio == as.integer(a)] > lim[a])))
+
+anios <- 2021:2025
+med   <- tapply(comp$max_de_max, comp$anio, median)
+plot(NA, xlim = c(2020.5, 2025.5), ylim = c(0, max(comp$max_de_max) * 1.08), xaxt = "n",
+     xlab = "", ylab = "ppb", main = "Máximo anual del promedio móvil de 8 h de O3 (NOM-020-SSA1-2021)")
+axis(1, at = anios)
+for (a in anios) {
+  v <- sort(comp$max_de_max[comp$anio == a])
+  points(a + seq(-0.2, 0.2, length.out = length(v)), v, pch = 16, col = "#3E6E9E")
+  segments(a - 0.3, med[as.character(a)], a + 0.3, med[as.character(a)], lwd = 3)
+  segments(a - 0.45, lim[as.character(a)], a + 0.45, lim[as.character(a)], col = "#E07A2E", lwd = 3)
+}
+legend("bottomright", bty = "n", lwd = c(NA, 3, 3), pch = c(16, NA, NA),
+       col = c("#3E6E9E", "black", "#E07A2E"),
+       legend = c("Cada estación", "Mediana de las estaciones", "Límite de 8 h (NOM-020)"))
+```
+
+
+
