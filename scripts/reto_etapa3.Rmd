@@ -6,11 +6,11 @@ date: "2026-10-14"
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE, warning = FALSE, message = FALSE)
-knitr::opts_knit$set(root.dir = "~/Documents/TEC/Semestre 5/Multivariados/2003B_Blank")
+knitr::opts_knit$set(root.dir = normalizePath(".."))
 ```
 
 ```{r carga}
-df <- read.csv("data/final/sima_modelo_o3.csv")
+df <- read.csv("data/final/sima_modelo_o3.csv.gz"")
 df <- df[!df$estacion %in% c("NTE", "NO3"), ] 
 df$fecha_hora <- as.POSIXct(df$fecha_hora, tz = "UTC")
 cat("Filas:", nrow(df), " Estaciones:", length(unique(df$estacion)))
@@ -364,7 +364,7 @@ print(table(tipo_error(p25$O3_fut, p25$pred, U_EV, U_ALERTA)))
 
 
 ```{r fig-errores-todas, fig.width=14, fig.height=9}
-dir_fig <- "C:/Users/jpaz7/OneDrive/Escritorio/Data Science/Multivariados/"  # si existe, también guarda Errores.png
+dir_fig <- "output/"  # si existe, también guarda Errores.png
 
 graf_errores_base <- function(p, est, ylim, xlim, meses, u_ev = U_EV, u_alerta = U_ALERTA) {
   d <- p[p$estacion == est, ]
