@@ -1,17 +1,17 @@
 ---
 title: "Reto SIMA: pronóstico de ozono a 24 horas (Etapa 4)"
 output: html_document
-date: "2026-10-23"
+date: "2026-10-25"
 ---
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE, warning = FALSE, message = FALSE)
-library(lmtest)
+library(lmtest); library(here); knitr::opts_knit$set(root.dir = here::here())
 library(car)
 library(dplyr)
 library(cluster)
 
-RUTA_BASE    <- "data/final/sima_modelo_o3.csv"
+RUTA_BASE    <- "data/final/sima_modelo_o3.csv.gz"
 RUTA_MASCARA <- "data/final/sima_mascara_imputacion.csv.gz"
 ```
 
@@ -1013,7 +1013,7 @@ legend("bottomright", bty = "n", lwd = c(NA, 3, 3), pch = c(16, NA, NA),
 
 
 ```{r fig-r2-estacion}
-png("modelos_estacion.png", width = 2200, height = 1150, res = 300)
+png("docs/etapa4/modelos_estacion.png", width = 2200, height = 1150, res = 300)
 op <- par(mfrow = c(1, 2), mar = c(4, 5, 2.5, 1), oma = c(2.5, 0, 0, 0))
 for (per in c("2025 ene-jul", "2026 ene-jul")) {
   d <- tab_est[tab_est$periodo == per, ]
