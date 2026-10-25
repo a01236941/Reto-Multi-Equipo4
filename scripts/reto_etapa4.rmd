@@ -6,13 +6,16 @@ date: "2026-10-23"
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE, warning = FALSE, message = FALSE)
+knitr::opts_knit$set(root.dir = normalizePath(".."))
+library(plotly)
 library(lmtest)
 library(car)
 library(dplyr)
 library(cluster)
 
-RUTA_BASE    <- "data/final/sima_modelo_o3.csv"
+RUTA_BASE    <- "data/final/sima_modelo_o3.csv.gz"
 RUTA_MASCARA <- "data/final/sima_mascara_imputacion.csv.gz"
+RUTA_O3      <- "data/final/o3_horario_medido_2021_2026.csv"
 ```
 
 ## Umbrales
